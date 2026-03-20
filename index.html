@@ -3118,7 +3118,11 @@ h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
   // Timeline slots with swap support
   timelineSlots.forEach((slot, idx) => {
     if (timelineData[idx]) {
-      slot.innerHTML = '<img src="' + timelineData[idx] + '" alt="" draggable="true" loading="lazy">';
+      if (timelineData[idx].endsWith('.mp4')) {
+        slot.innerHTML = '<video src="' + timelineData[idx] + '" muted autoplay loop playsinline preload="metadata" draggable="true" style="width:100%;height:100%;object-fit:cover;"></video>';
+      } else {
+        slot.innerHTML = '<img src="' + timelineData[idx] + '" alt="" draggable="true" loading="lazy">';
+      }
       slot.classList.add('filled');
     }
 
@@ -3180,7 +3184,11 @@ h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
     var slot = timelineSlots[idx];
     if (!slot) return;
     if (timelineData[idx]) {
-      slot.innerHTML = '<img src="' + timelineData[idx] + '" alt="" draggable="true" loading="lazy">';
+      if (timelineData[idx].endsWith('.mp4')) {
+        slot.innerHTML = '<video src="' + timelineData[idx] + '" muted autoplay loop playsinline preload="metadata" draggable="true" style="width:100%;height:100%;object-fit:cover;"></video>';
+      } else {
+        slot.innerHTML = '<img src="' + timelineData[idx] + '" alt="" draggable="true" loading="lazy">';
+      }
       slot.classList.add('filled');
     } else {
       slot.innerHTML = '<span class="slot-num">' + (idx + 1) + '</span>';
