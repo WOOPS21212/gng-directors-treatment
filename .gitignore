@@ -1,0 +1,8 @@
+node_modules/
+assets/
+.DS_Store
+upload-to-r2.ts
+rewrite-html.ts
+deploy.py
+package.json
+package-lock.json

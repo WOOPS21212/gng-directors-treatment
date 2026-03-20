@@ -1,0 +1,3596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Georgia Natural Gas -- Director's Treatment v6</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   RESET + BASE
+   ============================================ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg: #FFFFFF;
+  --primary: #2B4AE8;
+  --secondary: #FF6B35;
+  --text: #1A1A1A;
+  --text-muted: #6B7280;
+  --card-bg: #F0F2FF;
+  --dark: #0A0E2A;
+  --font-headline: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-quote: 'Playfair Display', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html {
+  scroll-behavior: auto;
+  overflow-x: hidden;
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  background: var(--bg);
+  position: relative;
+}
+
+/* Subtle warm grain texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+img { max-width: 100%; display: block; }
+a { color: var(--primary); text-decoration: none; }
+
+.section {
+  min-height: 100vh;
+  padding: 120px 80px 80px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.section-full {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   BLUE SECTIONS
+   ============================================ */
+.section-blue {
+  background: var(--primary);
+  color: #fff;
+}
+.section-blue h2 { color: #fff; }
+.section-blue h3 { color: #fff; }
+.section-blue .body-text { color: rgba(255,255,255,0.9); }
+.section-blue .subtitle { color: rgba(255,255,255,0.6); }
+.section-blue .label { color: rgba(255,255,255,0.5); }
+.section-blue .quote { color: rgba(255,255,255,0.95); }
+
+/* Dark sections */
+.section-dark {
+  background: var(--dark);
+  color: #fff;
+}
+.section-dark h2 { color: #fff; }
+.section-dark .body-text { color: rgba(255,255,255,0.8); }
+.section-dark .subtitle { color: rgba(255,255,255,0.4); }
+.section-dark .label { color: rgba(255,255,255,0.4); }
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+h1, h2, h3 {
+  font-family: var(--font-headline);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+}
+h1 { font-size: clamp(4rem, 10vw, 10rem); }
+h2 { font-size: clamp(3rem, 6vw, 6rem); color: var(--primary); }
+h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
+
+.subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 8px;
+}
+
+.quote {
+  font-family: var(--font-quote);
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.quote-block {
+  border-left: 4px solid var(--secondary);
+  padding: 24px 32px;
+  margin: 40px 0;
+  background: rgba(255,107,53,0.04);
+}
+
+.tag {
+  display: inline-block;
+  background: var(--secondary);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.tag-blue {
+  background: var(--primary);
+}
+
+.body-text {
+  font-size: 1.05rem;
+  max-width: 640px;
+  color: var(--text);
+  line-height: 1.7;
+}
+.body-text + .body-text { margin-top: 16px; }
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+}
+
+.signature {
+  font-family: var(--font-quote);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--secondary);
+  margin-top: 32px;
+}
+
+/* Director's note annotations */
+.directors-note {
+  font-family: var(--font-quote);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--secondary);
+  margin-top: 12px;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+#topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+/* topbar stays visible at all times */
+
+#page-counter {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  min-width: 120px;
+}
+#section-name {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+#topbar-center {
+  font-family: var(--font-headline);
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: var(--primary);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#progress-bar {
+  position: fixed;
+  top: 54px;
+  left: 0;
+  height: 2px;
+  background: var(--primary);
+  z-index: 1001;
+  transition: width 0.1s linear;
+  width: 0%;
+  opacity: 0.6;
+}
+
+/* Right-side nav dots */
+#nav-dots {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(43,74,232,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.nav-dot.active {
+  background: var(--primary);
+  transform: scale(1.4);
+}
+.nav-dot:hover { background: var(--primary); }
+.nav-dot .tooltip {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--dark);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.nav-dot:hover .tooltip { opacity: 1; }
+
+/* Dashboard Toggle */
+#dash-toggle {
+  position: fixed;
+  top: 16px;
+  right: 120px;
+  z-index: 999;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(43,74,232,0.3);
+}
+#dash-toggle:hover { background: #1a3ad0; }
+
+/* Dashboard Overlay */
+#dashboard {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(20px);
+  z-index: 10000;
+  display: none;
+  overflow-y: auto;
+  padding: 80px 60px;
+}
+#dashboard.open { display: block; }
+#dash-close {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10001;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--text-muted);
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#dash-close:hover { color: var(--primary); border-color: var(--primary); }
+.dash-title {
+  font-family: var(--font-headline);
+  font-size: 3.5rem;
+  color: var(--primary);
+  margin-bottom: 16px;
+  text-align: center;
+}
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.dash-card {
+  background: #fff;
+  border: 2px solid #e8e8ec;
+  border-radius: 16px;
+  padding: 32px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.dash-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(43,74,232,0.12);
+}
+.dash-card.tool-card-dash {
+  border-color: rgba(255,107,53,0.3);
+  background: #FFF8F5;
+}
+.dash-card.tool-card-dash:hover {
+  border-color: var(--secondary);
+  box-shadow: 0 8px 32px rgba(255,107,53,0.12);
+}
+.dash-card.spot-card-dash {
+  border-color: rgba(43,74,232,0.2);
+  background: #F5F7FF;
+}
+.dash-card.spot-card-dash:hover {
+  border-color: var(--primary);
+}
+.dash-icon {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+  display: block;
+  color: var(--primary);
+}
+.dash-label {
+  font-family: var(--font-headline);
+  font-size: 1.4rem;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+.dash-sub {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ============================================
+   CURSOR GLOW
+   ============================================ */
+#cursor-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(43,74,232,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 32px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  box-shadow: 0 8px 32px rgba(43,74,232,0.1);
+}
+.card-white {
+  background: #fff;
+  color: var(--text);
+}
+.card-white h3 { color: var(--primary); }
+.card-white .body-text { color: var(--text); }
+
+/* ============================================
+   GRIDS
+   ============================================ */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid-2x4 { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto auto; gap: 12px; }
+.grid-3x2 { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 12px; }
+
+.img-rounded { border-radius: 8px; overflow: hidden; }
+.img-rounded img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Photo with corner brackets */
+.photo-bracket {
+  position: relative;
+  display: inline-block;
+}
+.photo-bracket::before,
+.photo-bracket::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--primary);
+}
+.photo-bracket::before {
+  top: -8px;
+  left: -8px;
+  border-right: none;
+  border-bottom: none;
+}
+.photo-bracket::after {
+  bottom: -8px;
+  right: -8px;
+  border-left: none;
+  border-top: none;
+}
+
+/* ============================================
+   COLLAGE GRID
+   ============================================ */
+.collage-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 200px 200px;
+  gap: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 32px 0;
+}
+.collage-grid .span-rows { grid-row: 1 / 3; }
+.collage-grid .img-cell { overflow: hidden; }
+.collage-grid .img-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.collage-grid .img-cell:hover img { transform: scale(1.05); }
+
+/* ============================================
+   BEAT CARDS -- LIST FORMAT
+   ============================================ */
+.beat-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 32px 0;
+}
+.beat-item {
+  background: #fff;
+  border-left: 3px solid var(--secondary);
+  border-radius: 0 8px 8px 0;
+  padding: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.beat-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.beat-item h4 {
+  font-family: var(--font-headline);
+  font-size: 1.2rem;
+  color: var(--secondary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+.beat-item p {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* Beat items on blue sections */
+.section-blue .beat-item {
+  background: #fff;
+}
+.section-blue .beat-item p {
+  color: var(--text);
+}
+
+/* ============================================
+   SPOT SECTIONS
+   ============================================ */
+.spot-watermark {
+  font-family: var(--font-headline);
+  font-size: clamp(10rem, 25vw, 20rem);
+  color: rgba(43,74,232,0.05);
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+.section-blue .spot-watermark {
+  color: rgba(255,255,255,0.08);
+}
+
+/* ============================================
+   AUDIO STORYBOARD -- BRIGHT THEME
+   ============================================ */
+.audio-storyboard {
+  margin: 40px 0;
+  background: var(--primary);
+  border: none;
+  border-radius: 16px;
+  padding: 32px;
+}
+.audio-storyboard-title {
+  font-family: var(--font-headline);
+  font-size: 1.6rem;
+  color: #fff;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.audio-storyboard-title .tag { font-size: 0.65rem; }
+.storyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.sb-panel {
+  aspect-ratio: 4/3;
+  background: #F0F2FF;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sb-panel.active {
+  border-color: var(--primary);
+  box-shadow: 0 0 16px rgba(43,74,232,0.2);
+}
+.sb-panel .timecode {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  color: rgba(255,255,255,0.8);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--text-muted);
+}
+.sb-panel .panel-num {
+  font-family: var(--font-headline);
+  font-size: 1.8rem;
+  color: rgba(43,74,232,0.12);
+}
+.sb-panel-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  padding: 4px 2px;
+  line-height: 1.3;
+}
+.sb-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+.sb-play-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--secondary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+.sb-play-btn:hover { background: #e55a2a; }
+.sb-play-btn svg { fill: #fff; }
+.sb-play-btn.playing { background: var(--primary); }
+.sb-waveform {
+  flex: 1;
+  height: 32px;
+  background: #F0F2FF;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.sb-waveform-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+.sb-waveform-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 8px;
+}
+.sb-waveform-bars span {
+  flex: 1;
+  background: rgba(43,74,232,0.15);
+  border-radius: 1px;
+  min-height: 3px;
+}
+.sb-timecode-display {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.8);
+  min-width: 50px;
+  text-align: right;
+}
+
+/* ============================================
+   MOOD REEL EXPLORER
+   ============================================ */
+.mood-reel {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 48px 48px 60px;
+  margin-top: 32px;
+  min-height: auto;
+}
+.shot-library {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-bottom: 32px;
+  min-height: 80px;
+}
+.shot-thumb {
+  width: 100%;
+  height: 140px;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: grab;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  position: relative;
+}
+.shot-thumb:hover { border-color: var(--primary); transform: scale(1.05); }
+.shot-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.shot-thumb.dragging { opacity: 0.4; }
+.shot-thumb.in-timeline { opacity: 0.3; pointer-events: none; }
+
+/* Editing Timeline */
+.timeline-container {
+  background: #1a1a2e;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 32px;
+}
+.timeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 12px;
+}
+.timeline-header-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.timeline-timecodes {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  padding: 0 2px;
+  margin-bottom: 4px;
+}
+.timeline-tc {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  color: rgba(255,255,255,0.25);
+  text-align: center;
+}
+.timeline-track {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.timeline-slot {
+  aspect-ratio: 16/9;
+  border: 2px dashed rgba(255,255,255,0.12);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  position: relative;
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+}
+.timeline-slot:hover {
+  border-color: rgba(255,255,255,0.25);
+}
+.timeline-slot.drag-over {
+  border-color: var(--secondary);
+  background: rgba(255,107,53,0.15);
+}
+.timeline-slot .slot-num {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.15);
+}
+.timeline-slot .slot-label {
+  font-family: var(--font-mono);
+  font-size: 0.4rem;
+  color: rgba(255,255,255,0.2);
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.timeline-slot.filled {
+  border-style: solid;
+  border-color: rgba(255,255,255,0.25);
+  border-width: 1px;
+}
+.timeline-slot.filled img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.timeline-slot.filled .slot-label { display: none; }
+.timeline-slot.filled .slot-num { display: none; }
+.timeline-slot.filled::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary);
+}
+.timeline-slot.playing::after {
+  background: var(--secondary);
+  animation: tlPulse 0.5s ease-in-out infinite alternate;
+}
+@keyframes tlPulse {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+/* Playhead */
+.timeline-playhead {
+  height: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 1px;
+  position: relative;
+  margin: 8px 2px;
+}
+.timeline-playhead-fill {
+  height: 100%;
+  background: var(--secondary);
+  border-radius: 1px;
+  width: 0%;
+  transition: width 0.3s linear;
+}
+.timeline-playhead-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--secondary);
+  position: absolute;
+  top: -4px;
+  left: 0%;
+  transition: left 0.3s linear;
+}
+/* Clip count */
+.timeline-clip-count {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.3);
+  text-align: right;
+  margin-top: 8px;
+  letter-spacing: 0.08em;
+}
+
+.track-selectors {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.track-btn {
+  flex: 1;
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid rgba(43,74,232,0.2);
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+.track-btn.selected { border-color: currentColor; background: rgba(43,74,232,0.04); }
+.track-btn .track-name {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+.track-btn .track-wave {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+.track-btn .track-wave span {
+  flex: 1;
+  border-radius: 1px;
+  min-height: 2px;
+  opacity: 0.5;
+}
+
+.mood-controls {
+  display: flex;
+  gap: 12px;
+}
+.mood-btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 10px 24px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.mood-btn-play { background: var(--primary); color: #fff; }
+.mood-btn-play:hover { background: #1a36c4; }
+.mood-btn-reset { background: rgba(43,74,232,0.1); color: var(--primary); }
+.mood-btn-reset:hover { background: rgba(43,74,232,0.2); }
+
+/* ============================================
+   FULLSCREEN MOOD OVERLAY
+   ============================================ */
+#mood-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#mood-overlay.active { display: flex; }
+#mood-overlay .mood-display {
+  max-width: 80vw;
+  max-height: 70vh;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+#mood-overlay .mood-display img {
+  max-width: 80vw;
+  max-height: 70vh;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+#mood-overlay .mood-display img.active { opacity: 1; }
+#mood-overlay .mood-position {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+#mood-overlay .mood-pip {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.3s ease;
+}
+#mood-overlay .mood-pip.active { background: var(--secondary); }
+#mood-overlay .mood-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+#mood-overlay .mood-close-btn:hover { background: rgba(255,255,255,0.2); }
+
+/* ============================================
+   FLOOR PLAN
+   ============================================ */
+.floor-plan-container {
+  background: #fff;
+  border: 1px solid rgba(43,74,232,0.15);
+  border-radius: 16px;
+  padding: 48px;
+  margin-top: 32px;
+  text-align: center;
+}
+.section-blue .floor-plan-container {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+}
+.floor-plan-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.fp-btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.fp-btn.active { background: #fff; color: var(--primary); }
+.fp-btn:hover { background: #fff; color: var(--primary); }
+
+.floor-plan-svg { max-width: 800px; margin: 0 auto; }
+
+/* ============================================
+   SOUND BRIDGE
+   ============================================ */
+.sound-bridge-sequence {
+  margin: 40px 0;
+  padding: 32px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(43,74,232,0.12);
+}
+.section-blue .sound-bridge-sequence {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+}
+.sound-bridge-panels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.sound-bridge-panel {
+  aspect-ratio: 16/10;
+  background: #E8EDFF;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.section-blue .sound-bridge-panel {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+}
+.sound-bridge-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.sound-bridge-box {
+  flex: 1;
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 16px 20px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.section-blue .sound-bridge-box {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.sound-bridge-arrow {
+  font-size: 1.4rem;
+  color: var(--secondary);
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+
+.waveform-animated {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  margin: 16px 0;
+}
+.waveform-animated span {
+  width: 3px;
+  background: var(--primary);
+  border-radius: 2px;
+  animation: wave 1.2s ease-in-out infinite;
+}
+.section-blue .waveform-animated span {
+  background: #fff;
+}
+@keyframes wave {
+  0%, 100% { height: 8px; }
+  50% { height: 100%; }
+}
+
+/* ============================================
+   COVER SECTION
+   ============================================ */
+#cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+#cover .bg-img {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-0.General--GNG_General_21.png');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+#cover .bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(43,74,232,0.78) 0%, rgba(10,14,42,0.6) 100%);
+  z-index: 1;
+}
+#cover .content { position: relative; z-index: 2; }
+#cover h1 {
+  font-size: clamp(4rem, 12vw, 11rem);
+  color: #fff;
+  line-height: 0.9;
+  margin-bottom: 24px;
+}
+#cover .director {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--secondary);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+#cover .campaign-info {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.15em;
+}
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: float 2s ease-in-out infinite;
+}
+.scroll-hint span {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+.scroll-hint .arrow {
+  width: 20px;
+  height: 20px;
+  border-right: 2px solid rgba(255,255,255,0.4);
+  border-bottom: 2px solid rgba(255,255,255,0.4);
+  transform: rotate(45deg);
+}
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ============================================
+   TRANSITION SECTIONS
+   ============================================ */
+.section-transition {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+.section-transition .bg-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.section-transition .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,14,42,0.6);
+}
+.section-transition .content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+/* ============================================
+   FUN FACT INTERSTITIALS
+   ============================================ */
+.fun-fact-section {
+  min-height: auto;
+  padding: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   TOOL CARDS
+   ============================================ */
+.tool-card {
+  background: #fff;
+  border-left: 4px solid var(--primary);
+  border-radius: 0 10px 10px 0;
+  padding: 32px;
+  margin-bottom: 16px;
+  transition: transform 0.3s ease;
+}
+.tool-card:hover { transform: translateX(4px); }
+.tool-card .tool-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--secondary);
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+}
+.tool-card h4 {
+  font-family: var(--font-headline);
+  font-size: 1.6rem;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+.tool-card .body-text { color: var(--text); }
+
+/* ============================================
+   MASONRY
+   ============================================ */
+.masonry {
+  columns: 3;
+  column-gap: 12px;
+  margin: 32px 0;
+}
+.masonry .img-rounded {
+  break-inside: avoid;
+  margin-bottom: 12px;
+}
+
+/* ============================================
+   GEORGIA MAP
+   ============================================ */
+.georgia-map-container {
+  max-width: 500px;
+  margin: 32px auto;
+  position: relative;
+}
+
+/* ============================================
+   PRE-VIS PIPELINE TIMELINE
+   ============================================ */
+.previs-timeline {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin: 40px 0;
+  position: relative;
+}
+.previs-timeline::before {
+  content: '';
+  position: absolute;
+  top: 42px;
+  left: 5%;
+  right: 5%;
+  height: 3px;
+  background: rgba(43,74,232,0.2);
+  z-index: 0;
+}
+.previs-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.previs-step .step-thumb {
+  width: 90px;
+  height: 60px;
+  margin: 0 auto 12px;
+  border: 2px solid rgba(43,74,232,0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  font-size: 1.4rem;
+  color: rgba(43,74,232,0.3);
+}
+.previs-step .step-thumb.highlight {
+  border-color: var(--secondary);
+  border-width: 3px;
+}
+.previs-step .step-title {
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.previs-step .step-desc {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   CLOSING
+   ============================================ */
+#closing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.section-blue#closing h1 { color: #fff; }
+.breathing-pip {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  margin-top: 48px;
+  animation: breathe 3s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ============================================
+   PLACEHOLDER BOX
+   ============================================ */
+.placeholder-box {
+  border: 2px dashed var(--primary);
+  background: rgba(43,74,232,0.04);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+
+/* Director's Note -- audio player component */
+.director-note {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid #e0dbd4;
+  border-radius: 12px;
+  margin: 24px 0;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.section-blue .director-note {
+  background: rgba(255,255,255,0.95);
+  border-color: rgba(255,255,255,0.3);
+}
+.director-note:hover {
+  border-color: var(--secondary);
+  box-shadow: 0 4px 20px rgba(255,107,53,0.08);
+}
+.director-note::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,107,53,0.06), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.6s;
+  pointer-events: none;
+}
+.director-note.is-playing::before { opacity: 1; }
+.dn-photo {
+  width: 44px; height: 44px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0; position: relative; z-index: 1;
+  border: 2px solid #e0dbd4; background: #F0F2FF;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.3s;
+}
+.director-note.is-playing .dn-photo { border-color: var(--secondary); }
+.dn-photo .initials {
+  font-family: var(--font-headline); font-size: 16px; color: var(--text-muted); letter-spacing: 0.04em;
+}
+.dn-photo .pip {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--secondary); border: 2px solid #fff;
+  animation: pipBreath 2.5s ease-in-out infinite;
+}
+@keyframes pipBreath {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.director-note.is-playing .dn-photo .pip { animation: none; opacity: 1; box-shadow: 0 0 6px rgba(255,107,53,0.4); }
+.dn-text { flex: 1; min-width: 0; position: relative; z-index: 1; }
+.dn-label {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px;
+}
+.dn-topic {
+  font-family: var(--font-quote); font-style: italic; font-size: 14px;
+  color: var(--text); line-height: 1.35; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.dn-wave {
+  display: flex; gap: 2px; align-items: center; height: 22px;
+  flex-shrink: 0; position: relative; z-index: 1;
+  max-width: 0; opacity: 0; transition: max-width 0.4s, opacity 0.4s;
+}
+.director-note.is-playing .dn-wave { max-width: 100px; opacity: 1; }
+.dn-wave .bar {
+  width: 2px; background: var(--secondary); border-radius: 1px; opacity: 0.3;
+}
+.director-note.is-playing .dn-wave .bar {
+  opacity: 0.6; animation: dnWave 0.5s ease-in-out infinite alternate;
+}
+@keyframes dnWave {
+  0% { transform: scaleY(0.3); }
+  100% { transform: scaleY(1); }
+}
+.dn-play {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1.5px solid var(--secondary); background: transparent;
+  color: var(--secondary); font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.3s; position: relative; z-index: 1;
+}
+.dn-play:hover { background: var(--secondary); color: #fff; }
+.director-note.is-playing .dn-play { background: var(--secondary); color: #fff; }
+.dn-dur {
+  font-family: var(--font-mono); font-size: 9px; color: var(--text-muted);
+  flex-shrink: 0; min-width: 28px; text-align: right; z-index: 1;
+}
+.dn-progress {
+  position: absolute; bottom: 0; left: 0; height: 2px;
+  background: var(--secondary); width: 0%; transition: width 0.2s linear; z-index: 1;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  .section { padding: 100px 40px 60px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .grid-4, .grid-2x4 { grid-template-columns: repeat(2, 1fr); }
+  .collage-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .collage-grid .span-rows { grid-row: auto; }
+  #nav-dots { display: none; }
+  .timeline-track { grid-template-columns: repeat(5, 1fr); }
+  .timeline-timecodes { grid-template-columns: repeat(5, 1fr); }
+  .previs-timeline { flex-wrap: wrap; }
+  .previs-timeline::before { display: none; }
+  .sound-bridge-panels { grid-template-columns: 1fr; }
+  .sound-bridge-flow { flex-direction: column; }
+  .sound-bridge-arrow { transform: rotate(90deg); }
+}
+@media (max-width: 640px) {
+  .section { padding: 80px 20px 40px; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .mood-reel { padding: 24px; }
+  .storyboard-grid { grid-template-columns: repeat(3, 1fr); }
+  .track-selectors { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor Glow -->
+<div id="cursor-glow"></div>
+
+<!-- Top Bar -->
+<nav id="topbar">
+  <div id="page-counter">01 / 22</div>
+  <div id="topbar-center">GNG TREATMENT</div>
+  <div id="section-name">COVER</div>
+</nav>
+
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
+
+<!-- Nav Dots -->
+<nav id="nav-dots"></nav>
+
+<!-- Dashboard -->
+<button id="dash-toggle">DASHBOARD</button>
+<div id="dashboard">
+  <button id="dash-close">CLOSE</button>
+  <div class="dash-title">Treatment Navigation</div>
+  <p style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-muted); text-align:center; margin-top:-32px; margin-bottom:32px; letter-spacing:0.15em;">CLICK TO JUMP -- ESC TO CLOSE</p>
+
+  <p style="font-family:var(--font-mono); font-size:0.6rem; color:var(--text-muted); text-align:center; margin-bottom:12px; letter-spacing:0.15em; text-transform:uppercase;">SECTIONS</p>
+  <div class="dash-grid" id="dash-sections">
+    <!-- populated by JS -->
+  </div>
+
+  <p style="font-family:var(--font-mono); font-size:0.6rem; color:var(--secondary); text-align:center; margin:32px 0 12px; letter-spacing:0.15em; text-transform:uppercase;">INTERACTIVE TOOLS</p>
+  <div class="dash-grid" id="dash-tools">
+    <div class="dash-card tool-card-dash" onclick="dashGoTo('Mood Reel')">
+      <span class="dash-icon">&#9835;</span>
+      <div class="dash-label">Mood Reel Explorer</div>
+      <div class="dash-sub">Pick music, build your montage</div>
+    </div>
+    <div class="dash-card tool-card-dash" onclick="dashGoTo('Floor Plan')">
+      <span class="dash-icon">&#9633;</span>
+      <div class="dash-label">Floor Plan Blocker</div>
+      <div class="dash-sub">Draw paths, animate blocking</div>
+    </div>
+    <div class="dash-card tool-card-dash" onclick="dashGoTo('Spot 01')">
+      <span class="dash-icon">&#9654;</span>
+      <div class="dash-label">Audio Storyboard</div>
+      <div class="dash-sub">Ready Or Not -- :30 animatic</div>
+    </div>
+  </div>
+
+  <p style="font-family:var(--font-mono); font-size:0.6rem; color:var(--primary); text-align:center; margin:32px 0 12px; letter-spacing:0.15em; text-transform:uppercase;">THE SPOTS</p>
+  <div class="dash-grid" id="dash-spots">
+    <div class="dash-card spot-card-dash" onclick="dashGoTo('Spot 01')">
+      <span class="dash-icon">01</span>
+      <div class="dash-label">Ready Or Not</div>
+      <div class="dash-sub">Winter -- Day 5</div>
+    </div>
+    <div class="dash-card spot-card-dash" onclick="dashGoTo('Spot 02')">
+      <span class="dash-icon">02</span>
+      <div class="dash-label">Kick Fall Off Right</div>
+      <div class="dash-sub">Football -- Day 1</div>
+    </div>
+    <div class="dash-card spot-card-dash" onclick="dashGoTo('Spot 03')">
+      <span class="dash-icon">03</span>
+      <div class="dash-label">Lots To Be Thankful For</div>
+      <div class="dash-sub">Thanksgiving -- Day 2</div>
+    </div>
+    <div class="dash-card spot-card-dash" onclick="dashGoTo('Spot 04')">
+      <span class="dash-icon">04</span>
+      <div class="dash-label">Dad In Deep</div>
+      <div class="dash-sub">Kitchen Chaos -- Day 3</div>
+    </div>
+    <div class="dash-card spot-card-dash" onclick="dashGoTo('Spot 05')">
+      <span class="dash-icon">05</span>
+      <div class="dash-label">Camping In</div>
+      <div class="dash-sub">Indoor Campout -- Day 4</div>
+    </div>
+  </div>
+</div>
+
+<!-- Fullscreen Mood Reel Overlay -->
+<div id="mood-overlay">
+  <button class="mood-close-btn" id="mood-close-overlay">CLOSE</button>
+  <div class="mood-display" id="mood-display"></div>
+  <div class="mood-position" id="mood-position"></div>
+</div>
+
+
+<!-- ============================================
+     SECTION 1: COVER (blue overlay)
+     ============================================ -->
+<section id="cover" class="section section-full" data-section="1" data-label="Cover" data-name="Cover">
+  <div class="bg-img"></div>
+  <div class="bg-overlay"></div>
+  <div class="content">
+    <div style="margin-bottom:32px;">
+      <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Graphical-Assets--Georgia_Natural_Gas_Logo.jpg" alt="Georgia Natural Gas" style="height:120px; display:block; margin:0 auto; border-radius:8px;" loading="lazy">
+    </div>
+    <h1>GEORGIA<br>NATURAL GAS</h1>
+    <p class="director">Jonathan Hayes / Ammunition / Atlanta, GA</p>
+    <p class="campaign-info">'26-'28 National Campaign -- Six Spots</p>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 2: DIRECTOR'S LETTER (white -- merged with Why Me)
+     ============================================ -->
+<section class="section" data-section="2" data-label="Director's Letter" data-name="Director's Letter">
+  <h2>Director's Letter</h2>
+  <div class="grid-2" style="margin-top:48px; align-items:start;">
+    <div>
+      <div class="quote-block">
+        <p class="quote">"When I saw these scripts and the previous campaign, something clicked. These are the exact type of spots I love directing -- domestic, warm, full of subtle beats."</p>
+      </div>
+      <p class="body-text" style="margin-top:24px;">And when I found out Kyle was a joy to work with, it sealed it. This is an ideal project. I love this opportunity to collaborate and share ideas.</p>
+      <p class="body-text">I hope some of these ideas resonate. With the roster of people you're talking to, this campaign is going to be in great hands. So without further ado -- let me tell you how I would direct this.</p>
+      <hr style="border:none; border-top:1px solid rgba(0,0,0,0.1); margin:32px 0;">
+      <p style="font-family:var(--font-quote); font-style:italic; font-size:0.95rem; color:var(--text); line-height:1.6;">My wife and I of eight years have one daughter who loves getting her nails done, another who puts raspberries on her fingers, and a little son who's a little berry himself. It's an interesting time in my life -- I relate to every moment in this campaign.</p>
+      <div style="display:flex; gap:12px; margin-top:20px;">
+        <div style="border-radius:8px; overflow:hidden; width:160px; height:160px; flex-shrink:0;">
+          <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--IMG_1175.jpeg" alt="Daughter at nail salon" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+        </div>
+        <div style="border-radius:8px; overflow:hidden; width:160px; height:160px; flex-shrink:0;">
+          <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--IMG_1200.jpeg" alt="Daughter with raspberries" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+        </div>
+        <div style="border-radius:8px; overflow:hidden; width:160px; height:160px; flex-shrink:0;">
+          <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--IMG_0796.jpeg" alt="Baby boy" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+        </div>
+      </div>
+      <p class="signature">--Jonathan</p>
+      <div class="director-note" id="dn-welcome" style="margin-top:24px;">
+        <div class="dn-photo"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--Jonathan.jpg" alt="JH" style="width:100%;height:100%;object-fit:cover;" loading="lazy"><span class="pip"></span></div>
+        <div class="dn-text">
+          <div class="dn-label">A note from the director</div>
+          <div class="dn-topic">Welcome -- why this project matters to me</div>
+        </div>
+        <div class="dn-wave"></div>
+        <button class="dn-play" onclick="dnTogglePlay('welcome')">&#9654;</button>
+        <span class="dn-dur">0:37</span>
+        <div class="dn-progress"></div>
+      </div>
+    </div>
+    <div>
+      <div style="border-radius:12px; overflow:hidden;">
+        <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--Jonathan.jpg" alt="Jonathan Hayes" style="width:100%; aspect-ratio:3/4; object-fit:cover; display:block;" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 3: WHAT THIS TREATMENT IS (blue)
+     ============================================ -->
+<section class="section section-blue" data-section="3" data-label="The Treatment" data-name="The Treatment">
+  <h2>What This<br>Treatment Is</h2>
+  <div style="margin-top:40px; display:flex; flex-direction:column; gap:16px; max-width:760px;">
+    <div style="display:flex; align-items:flex-start; gap:16px; background:rgba(255,255,255,0.1); border-radius:10px; padding:20px 24px; border-left:4px solid var(--secondary);">
+      <span style="font-family:var(--font-headline); font-size:2rem; color:var(--secondary); line-height:1; flex-shrink:0; min-width:32px;">01</span>
+      <p class="body-text" style="margin:0;">The recipe for success. Not every aspect of production -- this is what I believe it takes to be successful creating this 2.0 vision.</p>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:16px; background:rgba(255,255,255,0.1); border-radius:10px; padding:20px 24px; border-left:4px solid var(--secondary);">
+      <span style="font-family:var(--font-headline); font-size:2rem; color:var(--secondary); line-height:1; flex-shrink:0; min-width:32px;">02</span>
+      <p class="body-text" style="margin:0;">A fluid experience. Not just getting to wonderful creative, but making sure everybody flies home happy. The formula covers both.</p>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:16px; background:rgba(255,255,255,0.1); border-radius:10px; padding:20px 24px; border-left:4px solid var(--secondary);">
+      <span style="font-family:var(--font-headline); font-size:2rem; color:var(--secondary); line-height:1; flex-shrink:0; min-width:32px;">03</span>
+      <p class="body-text" style="margin:0;">A bucket of my ideas -- take them or leave them. My favorite ways to get that cute little smile out of people.</p>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:16px; background:rgba(255,255,255,0.1); border-radius:10px; padding:20px 24px; border-left:4px solid var(--secondary);">
+      <span style="font-family:var(--font-headline); font-size:2rem; color:var(--secondary); line-height:1; flex-shrink:0; min-width:32px;">04</span>
+      <p class="body-text" style="margin:0;">A couple of tools -- like the mood reel builder and the floor plan blocker -- that show how our process is different.</p>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:16px; background:rgba(255,255,255,0.15); border-radius:10px; padding:20px 24px; border-left:none; border:1px dashed rgba(255,255,255,0.3);">
+      <span style="font-family:var(--font-body); font-size:1.2rem; color:rgba(255,255,255,0.7); line-height:1; flex-shrink:0; min-width:32px; text-align:center;">&#10033;</span>
+      <p class="body-text" style="margin:0; font-style:italic; color:rgba(255,255,255,0.7);">In pre-production, we'd go deeper on casting, production design, wardrobe -- the works. This treatment is the formula.</p>
+    </div>
+  </div>
+
+  <div style="margin:40px 0 16px; padding:16px 24px; background:rgba(255,255,255,0.12); border-radius:8px; border-left:4px solid var(--secondary); display:inline-block;">
+    <p style="font-family:var(--font-body); font-weight:600; color:#fff; font-size:0.95rem;">GIFs from the round 1 campaign.</p>
+  </div>
+
+  <div class="grid-3x2" style="margin:24px 0;">
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%201.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="Round 1"></video></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%202.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="Round 1"></video></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%203.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="Round 1"></video></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%204.gif" alt="Round 1" loading="lazy"></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%205.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="Round 1"></video></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%206.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="Round 1"></video></div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 4: THE WORLD (white)
+     ============================================ -->
+<section class="section" data-section="4" data-label="The World" data-name="The World">
+  <h2 style="font-size:clamp(5rem,12vw,10rem); position:relative; z-index:2; margin-bottom:-40px;">World Building</h2>
+  <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:24px;">
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-9.19032026--GNG_4_20.jpg" alt="Kids on couch" loading="lazy"></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%207.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-9.19032026--GNG_4_110.png" alt="Woman dog fireplace" loading="lazy"></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%208.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-8.Extras--GNG_3_4.jpg" alt="Mom and daughter" loading="lazy"></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%209.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-9.19032026--GNG_4_95.png" alt="Dad walking" loading="lazy"></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%2010.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-9.19032026--GNG_4_60.png" alt="Kid with sweater" loading="lazy"></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%2011.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+  </div>
+  <p class="body-text" style="margin-top:32px; max-width:720px;">Kyle's world is the world of experiences. Watching the game. Burning dinner. Wrestling winter coats onto kids. She's the thread that ties it all together.</p>
+</section>
+
+
+<!-- ============================================
+     SECTION 5: KYLE IS THE THREAD (blue)
+     ============================================ -->
+<section class="section section-blue" data-section="5" data-label="Kyle" data-name="Kyle Is The Thread">
+  <h2>...Kyle Is The Thread</h2>
+
+  <div style="max-width:800px; margin:32px 0; border-radius:12px; overflow:hidden;">
+    <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--ezgif-5157324d2a8e6bc1.gif" alt="Kyle in blue blazer" loading="lazy">
+  </div>
+
+  <p class="body-text">Mary Poppins in a blue blazer. The chaos happens around her and she just... handles it.</p>
+  <p class="body-text" style="margin-top:16px;">Her performance was fantastic. Where I'd take it next: quicker movements through the house, snappier transitions, but easing in and out of motion so it never feels rushed.</p>
+
+  <div class="grid-3" style="margin-top:40px;">
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_29.gif" alt="Kyle exchange" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_30.gif" alt="Kyle exchange" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_34.gif" alt="Kyle exchange" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- ============================================
+     SECTION 5B: GOOD EXCHANGES (white)
+     ============================================ -->
+<section class="section" data-section="5b" data-label="Exchanges" data-name="Good Exchanges">
+  <h2>Good Exchanges<br>&amp; Handoffs Are Key</h2>
+  <p class="body-text" style="margin-top:16px; max-width:700px;">These little moments and exchanges are dance moves. In pre-production, we need to think about them at a very nuanced level -- subtle reactions, tiny timing shifts. We let the actors know exactly what we're looking for ahead of time. That's how the magic happens.</p>
+
+  <div class="director-note" id="dn-exchanges" style="max-width:600px; margin:24px 0;">
+    <div class="dn-photo"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--Jonathan.jpg" alt="JH" style="width:100%;height:100%;object-fit:cover;" loading="lazy"><span class="pip"></span></div>
+    <div class="dn-text">
+      <div class="dn-label">A note from the director</div>
+      <div class="dn-topic">Why these exchanges matter and how we find them</div>
+    </div>
+    <div class="dn-wave"></div>
+    <button class="dn-play" onclick="dnTogglePlay('exchanges')">&#9654;</button>
+    <span class="dn-dur">0:55</span>
+    <div class="dn-progress"></div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(4, 1fr); grid-template-rows:repeat(3, 1fr); gap:12px; margin-top:32px;">
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--GNG_2_28.gif" alt="Exchange" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--GNG_2_11.gif" alt="Exchange" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--GNG_4_66.gif" alt="Exchange" loading="lazy"></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--GNG_2_7.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="Exchange"></video></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--ezgif-5b340f8b4ae90931.gif" alt="Exchange" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--ezgif-54b178a312f658be.gif" alt="Exchange" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--GNG_4_37.gif" alt="Exchange" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--GNG_4_32.gif" alt="Exchange" loading="lazy"></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--GNG_2_47.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="Exchange"></video></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--ezgif-52b1f8f715988a3a.gif" alt="Exchange" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--ezgif-5c339c89e62d0449.gif" alt="Exchange" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--GNG_4_51.gif" alt="Exchange" loading="lazy"></div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 6: THE BALLERINA RUBE GOLDBERG (white)
+     ============================================ -->
+<section class="section" data-section="6" data-label="Ballerina Rube Goldberg" data-name="Ballerina Rube Goldberg">
+  <h2>Kyle's Blocking:<br>A Song And Dance</h2>
+  <p class="subtitle" style="margin-top:8px; color:var(--primary); font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase;">The Ballerina Meets The Rube Goldberg</p>
+  <div style="margin-top:24px; max-width:700px;">
+    <p class="body-text">Let's 2.0 Kyle's blocking. She's graceful like a ballerina -- but she's also going through a chain of events, being at the right place at the right time. The main mechanism of a Rube Goldberg machine.</p>
+  </div>
+
+  <div style="margin-top:40px; max-width:700px;">
+    <p class="body-text" style="font-size:1.05rem;">The ballerina meets the Rube Goldberg. Kyle moves gracefully like a ballerina -- and she serves as the main mechanism carrying the audience through a chain of relatable life events. That's the formula for each spot.</p>
+  </div>
+  <div class="grid-2" style="margin-top:32px;">
+    <div>
+      <h3 style="color:var(--primary); margin-bottom:16px;">The Ballerina</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; border-radius:10px; overflow:hidden;">
+        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-John-Lewis-Spot--John%20Lewis%20Gif%201.mp4" autoplay loop muted playsinline style="width:100%; display:block;" title="Tiny Dancer"></video>
+        <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-John-Lewis-Spot--John%20Lewis%20Gif%202.gif" alt="Tiny Dancer" style="width:100%; display:block;" loading="lazy">
+        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-John-Lewis-Spot--John%20Lewis%20Gif%203.mp4" autoplay loop muted playsinline style="width:100%; display:block;" title="Tiny Dancer"></video>
+        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-John-Lewis-Spot--John%20Lewis%20Gif%204.mp4" autoplay loop muted playsinline style="width:100%; display:block;" title="Tiny Dancer"></video>
+      </div>
+    </div>
+    <div>
+      <h3 style="color:var(--primary); margin-bottom:16px;">The Rube Goldberg</h3>
+      <div style="border-radius:10px; overflow:hidden;">
+        <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-9.19032026--rube-goldberg-reference.gif" alt="Rube Goldberg" style="width:100%; display:block;" loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:64px;">
+    <p class="quote" style="font-size:clamp(1.6rem,3vw,2.6rem);">"The camera and Kyle are dance partners."</p>
+  </div>
+
+<div class="director-note" id="dn-blocking" style="max-width:600px; margin:32px auto;">
+  <div class="dn-photo"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--Jonathan.jpg" alt="JH" style="width:100%;height:100%;object-fit:cover;" loading="lazy"><span class="pip"></span></div>
+  <div class="dn-text">
+    <div class="dn-label">A note from the director</div>
+    <div class="dn-topic">How the song and dance translates to camera</div>
+  </div>
+  <div class="dn-wave"></div>
+  <button class="dn-play" onclick="dnTogglePlay('blocking')">&#9654;</button>
+  <span class="dn-dur">0:30</span>
+  <div class="dn-progress"></div>
+</div>
+
+  <div style="max-width:700px; margin:32px auto 0; border-radius:12px; overflow:hidden;">
+    <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-9.19032026--ballet-reference.gif" alt="Ballet -- the song and dance" style="width:100%; display:block;" loading="lazy">
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 7: THE UPGRADE (blue)
+     ============================================ -->
+<section class="section section-blue" data-section="7" data-label="The Upgrade" data-name="The Upgrade" style="min-height:auto; padding-top:80px; padding-bottom:80px;">
+  <div style="display:flex; align-items:center; gap:16px; margin-bottom:8px;">
+    <h2>The Upgrade</h2>
+    <span class="tag" style="margin-top:8px;">The 2.0 Promise</span>
+  </div>
+
+  <p class="body-text" style="margin-top:24px;">Off Broadway to Broadway. Same show. But the lighting is warmer, the handoffs are tighter, and the moments breathe.</p>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-top:40px;">
+    <div class="card card-white" style="text-align:center; padding:16px 16px;">
+      <div style="font-family:var(--font-headline); font-size:1.6rem; color:var(--primary); margin-bottom:8px;">Lighting</div>
+      <p class="body-text" style="margin:0; font-size:0.9rem;">Warmer. More controlled. Every frame intentional.</p>
+    </div>
+    <div class="card card-white" style="text-align:center; padding:16px 16px;">
+      <div style="font-family:var(--font-headline); font-size:1.6rem; color:var(--primary); margin-bottom:8px;">Handoffs</div>
+      <p class="body-text" style="margin:0; font-size:0.9rem;">Tighter exchanges. Moments that land.</p>
+    </div>
+    <div class="card card-white" style="text-align:center; padding:16px 16px;">
+      <div style="font-family:var(--font-headline); font-size:1.6rem; color:var(--primary); margin-bottom:8px;">Rhythm</div>
+      <p class="body-text" style="margin:0; font-size:0.9rem;">Slow down for charm beats. Speed up for energy.</p>
+    </div>
+    <div class="card card-white" style="text-align:center; padding:16px 16px;">
+      <div style="font-family:var(--font-headline); font-size:1.6rem; color:var(--primary); margin-bottom:8px;">Preparation</div>
+      <p class="body-text" style="margin:0; font-size:0.9rem;">Pre-vis, audio shells, locked-down blocking. Smoother 2.0 on set.</p>
+    </div>
+    <div class="card card-white" style="text-align:center; padding:16px 16px;">
+      <div style="font-family:var(--font-headline); font-size:1.6rem; color:var(--secondary); margin-bottom:8px;">Subtlety</div>
+      <p class="body-text" style="margin:0; font-size:0.9rem;">We protect it. No over-the-top blocking. Grounded storytelling.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 8: TONE / VISUAL LANGUAGE (white + dark photos)
+     ============================================ -->
+<section class="section section-dark" data-section="8" data-label="Tone" data-name="Tone / Visual Language" style="padding-top:80px;">
+  <h2 style="font-size:clamp(4rem,9vw,8rem); margin-bottom:16px;">Tone /<br>Visual Language</h2>
+  <p class="body-text" style="margin-bottom:40px;">Warm light through windows. Lived-in kitchens. Atlanta homes with character.</p>
+  <div class="masonry">
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-8.Extras--GNG_3_1.jpg" alt="Mood" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-8.Extras--GNG_3_5.jpg" alt="Mood" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-8.Extras--GNG_3_7.jpg" alt="Mood" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-8.Extras--GNG_3_10.jpg" alt="Mood" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-8.Extras--GNG_3_12.jpg" alt="Mood" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-8.Extras--GNG_3_14.jpg" alt="Mood" loading="lazy"></div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 9: CREATIVE FRAMEWORK (blue)
+     ============================================ -->
+
+
+<!-- ============================================
+     SECTION 10: CASTING (white)
+     ============================================ -->
+<section class="section" data-section="10" data-label="Casting" data-name="Casting">
+  <h2>Casting A<br>Diverse Georgia</h2>
+  <p class="subtitle">Fully representing Georgia</p>
+
+  <div style="max-width:500px; margin:40px auto;">
+    <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Graphical-Assets--2GEORGIA%20untitled_Gemini%203%20(Nano%20Banana%20Pro)_2026-03-20_04-06-50.png" alt="Georgia -- Casting a Diverse State" style="width:100%; display:block;" loading="lazy">
+  </div>
+
+  <p class="body-text" style="text-align:center; margin:0 auto 40px; max-width:640px;">Every spot is a different Georgia family. Find the one key minor character. Cast around them.</p>
+
+  <div style="max-width:500px; margin:0 auto;">
+    <p class="label" style="margin-bottom:16px;">Key Minor Characters Per Spot</p>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--secondary); min-width:80px;">Spot 01</span>
+        <span style="font-family:var(--font-mono); font-size:0.85rem;">The foam finger fan</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--secondary); min-width:80px;">Spot 02</span>
+        <span style="font-family:var(--font-mono); font-size:0.85rem;">Grandpa (the mug save)</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--secondary); min-width:80px;">Spot 03</span>
+        <span style="font-family:var(--font-mono); font-size:0.85rem;">The overwhelmed dad</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--secondary); min-width:80px;">Spot 04</span>
+        <span style="font-family:var(--font-mono); font-size:0.85rem;">The teen in shorts</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--secondary); min-width:80px;">Spot 05</span>
+        <span style="font-family:var(--font-mono); font-size:0.85rem;">The scout leader kid</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 11: TRANSITIONS (blue)
+     ============================================ -->
+<section class="section section-blue" data-section="11" data-label="Transitions" data-name="Transitions">
+  <h2>Transitions</h2>
+  <p class="body-text" style="margin:16px 0 40px; font-size:1.1rem;">Sound carries you there before the image does.</p>
+
+  <p class="label" style="margin-bottom:16px;">SOUND BRIDGE SEQUENCE</p>
+
+  <!-- 3 visual panels -->
+  <div class="sound-bridge-panels" style="margin-bottom:24px;">
+    <div class="sound-bridge-panel" style="background:none; padding:0; overflow:hidden; border-radius:8px;"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Cold-Boy-Tea-Pot--Playground_Gemini%203.1%20Flash%20(Nano%20Banana%202)_2026-03-20_00-33-44.png" alt="Teen squeals outside" style="width:100%; height:100%; object-fit:cover;" loading="lazy"></div>
+    <div class="sound-bridge-panel" style="background:none; padding:0; overflow:hidden; border-radius:8px;"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Cold-Boy-Tea-Pot--download.gif" alt="Steam from pot" style="width:100%; height:100%; object-fit:cover;" loading="lazy"></div>
+    <div class="sound-bridge-panel" style="background:none; padding:0; overflow:hidden; border-radius:8px;"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Exchanges-Handoffs--ezgif-54b178a312f658be.gif" alt="Kyle pulls pot / resolution" style="width:100%; height:100%; object-fit:cover;" loading="lazy"></div>
+  </div>
+
+  <!-- Animated waveform -->
+  <div class="waveform-animated" id="waveform-transitions" style="margin-bottom:24px;"></div>
+
+  <!-- Sound bridge boxes with arrows -->
+  <div class="sound-bridge-flow">
+    <div class="sound-bridge-box">Teen squeals outside in the cold</div>
+    <div class="sound-bridge-arrow">&#8594;</div>
+    <div class="sound-bridge-box">High-pitched steam from pot on gas stove</div>
+    <div class="sound-bridge-arrow">&#8594;</div>
+    <div class="sound-bridge-box">Kyle pulls pot off / chili goes on</div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 12: MOOD REEL EXPLORER (white)
+     ============================================ -->
+<section class="section" data-section="12" data-label="Mood Reel" data-name="Mood Reel Explorer">
+  <h2>Mood Reel Explorer</h2>
+  <p class="subtitle">Pick a track. Press play. Watch the vibe.</p>
+
+  <div class="director-note" id="dn-moodreel" style="max-width:600px; margin-bottom:32px;">
+    <div class="dn-photo"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--Jonathan.jpg" alt="JH" style="width:100%;height:100%;object-fit:cover;" loading="lazy"><span class="pip"></span></div>
+    <div class="dn-text">
+      <div class="dn-label">A note from the director</div>
+      <div class="dn-topic">How the mood reel works and why it matters</div>
+    </div>
+    <div class="dn-wave"></div>
+    <button class="dn-play" onclick="dnTogglePlay('moodreel')">&#9654;</button>
+    <span class="dn-dur">0:16</span>
+    <div class="dn-progress"></div>
+  </div>
+
+  <div class="mood-reel">
+    <p class="label" style="margin-bottom:12px;">Shot Library</p>
+    <div class="shot-library" id="shot-library">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="timeline-container">
+      <div class="timeline-header">
+        <span class="timeline-header-label">V1 -- SEQUENCE</span>
+        <span class="timeline-header-label" id="tl-clip-count">10 / 10 CLIPS</span>
+      </div>
+      <div class="timeline-timecodes">
+        <div class="timeline-tc">00:00</div>
+        <div class="timeline-tc">00:03</div>
+        <div class="timeline-tc">00:06</div>
+        <div class="timeline-tc">00:09</div>
+        <div class="timeline-tc">00:12</div>
+        <div class="timeline-tc">00:15</div>
+        <div class="timeline-tc">00:18</div>
+        <div class="timeline-tc">00:21</div>
+        <div class="timeline-tc">00:24</div>
+        <div class="timeline-tc">00:27</div>
+      </div>
+      <div class="timeline-track" id="mood-timeline">
+        <div class="timeline-slot" data-slot="0"><span class="slot-num">1</span></div>
+        <div class="timeline-slot" data-slot="1"><span class="slot-num">2</span></div>
+        <div class="timeline-slot" data-slot="2"><span class="slot-num">3</span></div>
+        <div class="timeline-slot" data-slot="3"><span class="slot-num">4</span></div>
+        <div class="timeline-slot" data-slot="4"><span class="slot-num">5</span></div>
+        <div class="timeline-slot" data-slot="5"><span class="slot-num">6</span></div>
+        <div class="timeline-slot" data-slot="6"><span class="slot-num">7</span></div>
+        <div class="timeline-slot" data-slot="7"><span class="slot-num">8</span></div>
+        <div class="timeline-slot" data-slot="8"><span class="slot-num">9</span></div>
+        <div class="timeline-slot" data-slot="9"><span class="slot-num">10</span></div>
+      </div>
+      <div class="timeline-playhead">
+        <div class="timeline-playhead-fill" id="tl-playhead-fill"></div>
+        <div class="timeline-playhead-dot" id="tl-playhead-dot"></div>
+      </div>
+    </div>
+
+    <p class="label" style="margin-bottom:12px;">Music Track</p>
+    <div class="track-selectors" id="track-selectors" style="flex-wrap:wrap;">
+      <button class="track-btn selected" data-track="a" style="color:#2B4AE8; flex:1 1 30%;">
+        <div class="track-name" style="color:#2B4AE8;">Green Onions -- Booker T. &amp; The MG's</div>
+        <div class="track-wave" id="track-wave-a"></div>
+      </button>
+      <button class="track-btn" data-track="b" style="color:#FF6B35; flex:1 1 30%;">
+        <div class="track-name" style="color:#FF6B35;">Mambo No. 5 -- Lou Bega</div>
+        <div class="track-wave" id="track-wave-b"></div>
+      </button>
+      <button class="track-btn" data-track="c" style="color:#4A8B5C; flex:1 1 30%;">
+        <div class="track-name" style="color:#4A8B5C;">Come On Eileen -- Dexys Midnight Runners</div>
+        <div class="track-wave" id="track-wave-c"></div>
+      </button>
+      <button class="track-btn" data-track="d" style="color:#9333EA; flex:1 1 30%;">
+        <div class="track-name" style="color:#9333EA;">A Little Less Conversation -- Elvis Presley</div>
+        <div class="track-wave" id="track-wave-d"></div>
+      </button>
+      <button class="track-btn" data-track="e" style="color:#DC2626; flex:1 1 30%;">
+        <div class="track-name" style="color:#DC2626;">Sympathy for the Devil -- Rolling Stones</div>
+        <div class="track-wave" id="track-wave-e"></div>
+      </button>
+      <button class="track-btn" data-track="f" style="color:#0891B2; flex:1 1 30%;">
+        <div class="track-name" style="color:#0891B2;">The Beat Goes On</div>
+        <div class="track-wave" id="track-wave-f"></div>
+      </button>
+    </div>
+
+    <div style="display:flex; gap:12px; margin-bottom:32px;">
+      <button class="mood-btn mood-btn-play" id="mood-play-btn">PLAY</button>
+      <button class="mood-btn mood-btn-reset" id="mood-reset-btn">RESET</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 13: FLOOR PLAN BLOCKING (blue)
+     ============================================ -->
+<section class="section section-blue" data-section="13" data-label="Floor Plan" data-name="Floor Plan Blocker">
+  <h2>Floor Plan Blocker</h2>
+  <p class="body-text" style="margin:16px 0 24px;">Part of our pre-production process. Through location scouting, we pre-block every beat of every spot. We go in knowing exactly what we need. Gets everyone on the same page faster.</p>
+
+  <div class="director-note" id="dn-floorplan" style="max-width:600px; margin-bottom:32px;">
+    <div class="dn-photo"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--Jonathan.jpg" alt="JH" style="width:100%;height:100%;object-fit:cover;" loading="lazy"><span class="pip"></span></div>
+    <div class="dn-text">
+      <div class="dn-label">A note from the director</div>
+      <div class="dn-topic">Why pre-blocking changes everything on set</div>
+    </div>
+    <div class="dn-wave"></div>
+    <button class="dn-play" onclick="dnTogglePlay('floorplan')">&#9654;</button>
+    <span class="dn-dur">0:32</span>
+    <div class="dn-progress"></div>
+  </div>
+
+  <div class="floor-plan-container">
+    <div class="floor-plan-controls">
+      <button class="fp-btn" id="fp-draw-own">Draw Your Own</button>
+      <button class="fp-btn" id="fp-clear-draw" style="display:none;">Clear Drawing</button>
+      <button class="fp-btn" id="fp-reset">Clear</button>
+    </div>
+
+    <div class="floor-plan-svg">
+      <svg viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg" id="floor-plan-svg" style="width:100%;">
+        <rect x="20" y="20" width="760" height="460" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        <!-- Living Room -->
+        <rect x="40" y="40" width="300" height="260" rx="4" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+        <text x="190" y="170" font-family="var(--font-mono)" font-size="12" fill="rgba(255,255,255,0.5)" text-anchor="middle">LIVING ROOM</text>
+        <!-- Kitchen -->
+        <rect x="360" y="40" width="260" height="200" rx="4" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+        <text x="490" y="140" font-family="var(--font-mono)" font-size="12" fill="rgba(255,255,255,0.5)" text-anchor="middle">KITCHEN</text>
+        <rect x="420" y="100" width="80" height="50" rx="3" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        <!-- Hallway -->
+        <rect x="340" y="260" width="40" height="140" rx="2" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        <text x="360" y="340" font-family="var(--font-mono)" font-size="8" fill="rgba(255,255,255,0.4)" text-anchor="middle" transform="rotate(-90,360,340)">HALL</text>
+        <!-- Dining -->
+        <rect x="400" y="260" width="220" height="200" rx="4" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+        <text x="510" y="360" font-family="var(--font-mono)" font-size="12" fill="rgba(255,255,255,0.5)" text-anchor="middle">DINING</text>
+        <ellipse cx="510" cy="360" rx="60" ry="40" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        <!-- Entry -->
+        <rect x="640" y="40" width="120" height="200" rx="4" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+        <text x="700" y="145" font-family="var(--font-mono)" font-size="11" fill="rgba(255,255,255,0.5)" text-anchor="middle">ENTRY</text>
+        <!-- Garage -->
+        <rect x="40" y="320" width="280" height="140" rx="4" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+        <text x="180" y="395" font-family="var(--font-mono)" font-size="12" fill="rgba(255,255,255,0.5)" text-anchor="middle">GARAGE / BACK</text>
+        <!-- Doors -->
+        <line x1="340" y1="150" x2="360" y2="150" stroke="var(--secondary)" stroke-width="3"/>
+        <line x1="620" y1="140" x2="640" y2="140" stroke="var(--secondary)" stroke-width="3"/>
+        <line x1="320" y1="300" x2="340" y2="320" stroke="var(--secondary)" stroke-width="3"/>
+        <!-- Camera -->
+        <g transform="translate(100,100)">
+          <rect x="-8" y="-6" width="16" height="12" rx="2" fill="var(--secondary)" opacity="0.8"/>
+          <polygon points="8,-3 14,0 8,3" fill="var(--secondary)" opacity="0.8"/>
+        </g>
+        <!-- Round 1 path: boring straight line through rooms -->
+        <path id="fp-path-r1" d="M190,170 L360,150 L490,140 L620,140 L700,140" stroke="#fff" stroke-width="3" fill="none" stroke-dasharray="1200" stroke-dashoffset="1200" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+        <!-- 2.0 path: song-and-dance blocking with detours, loops, beat stops -->
+        <path id="fp-path-r2" d="M700,130 C680,100 640,90 620,140 L500,100 C470,60 430,80 460,125 L420,140 C380,160 340,130 360,150 L280,120 C240,90 160,80 190,170 C220,200 260,230 190,250 L300,300 C340,320 380,360 360,340 C320,310 250,350 190,390 L180,430" stroke="var(--secondary)" stroke-width="3" fill="none" stroke-dasharray="2400" stroke-dashoffset="2400" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+        <!-- Beat dots: Round 1 -- just start and end -->
+        <g id="fp-beats-r1" opacity="0">
+          <circle cx="190" cy="170" r="6" fill="#fff"/>
+          <circle cx="490" cy="140" r="6" fill="#fff"/>
+          <circle cx="700" cy="140" r="6" fill="#fff"/>
+        </g>
+        <!-- Beat dots: 2.0 -- stops at thermostat, oven, mug save, etc. -->
+        <g id="fp-beats-r2" opacity="0">
+          <circle cx="700" cy="130" r="6" fill="var(--secondary)"/>
+          <text x="700" y="118" font-family="var(--font-mono)" font-size="7" fill="var(--secondary)" text-anchor="middle">ENTRY</text>
+          <circle cx="460" cy="125" r="6" fill="var(--secondary)"/>
+          <text x="460" y="113" font-family="var(--font-mono)" font-size="7" fill="var(--secondary)" text-anchor="middle">OVEN</text>
+          <circle cx="190" cy="170" r="6" fill="var(--secondary)"/>
+          <text x="190" y="158" font-family="var(--font-mono)" font-size="7" fill="var(--secondary)" text-anchor="middle">THERMOSTAT</text>
+          <circle cx="190" cy="250" r="6" fill="var(--secondary)"/>
+          <text x="190" y="265" font-family="var(--font-mono)" font-size="7" fill="var(--secondary)" text-anchor="middle">MUG SAVE</text>
+          <circle cx="360" cy="340" r="6" fill="var(--secondary)"/>
+          <text x="360" y="328" font-family="var(--font-mono)" font-size="7" fill="var(--secondary)" text-anchor="middle">CHEER</text>
+          <circle cx="180" cy="430" r="6" fill="var(--secondary)"/>
+          <text x="180" y="445" font-family="var(--font-mono)" font-size="7" fill="var(--secondary)" text-anchor="middle">FIREPLACE</text>
+        </g>
+        <!-- User drawn path group -->
+        <g id="fp-user-draw"></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 14: PRE-VIS PIPELINE (white)
+     ============================================ -->
+<section class="section" data-section="14" data-label="Pre-Vis" data-name="Pre-Vis Pipeline" style="min-height:auto; padding-top:80px; padding-bottom:60px;">
+  <h2>Pre-Vis Pipeline</h2>
+
+  <div class="previs-timeline">
+    <div class="previs-step">
+      <div class="step-thumb">&#128247;</div>
+      <div class="step-title">Location Scout</div>
+      <div class="step-desc">Capture every angle</div>
+    </div>
+    <div class="previs-step">
+      <div class="step-thumb">&#9634;</div>
+      <div class="step-title">Floor Plans</div>
+      <div class="step-desc">Map every room</div>
+    </div>
+    <div class="previs-step">
+      <div class="step-thumb">&#8634;</div>
+      <div class="step-title">Temp Blocking</div>
+      <div class="step-desc">Plot every beat</div>
+    </div>
+    <div class="previs-step">
+      <div class="step-thumb highlight">&#10024;</div>
+      <div class="step-title" style="color:var(--secondary);">AI Visualization</div>
+      <div class="step-desc">See it before we shoot</div>
+    </div>
+    <div class="previs-step">
+      <div class="step-thumb">&#127909;</div>
+      <div class="step-title">On Set</div>
+      <div class="step-desc">Execute with confidence</div>
+    </div>
+  </div>
+
+  <p class="body-text" style="margin-top:32px; text-align:center; max-width:640px; margin-left:auto; margin-right:auto; font-style:italic; color:var(--text-muted);">If you go with us, we will do this for every spot.</p>
+</section>
+
+
+<!-- ============================================
+     SECTION 15: "NOW, THE SPOTS." (dark navy)
+     ============================================ -->
+<section class="section section-transition" data-section="15" data-label="The Spots" data-name="Now, The Spots" style="padding:0;">
+  <div class="bg-img" style="background-image:url('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-0.General--GNG_2_128.png');"></div>
+  <div class="overlay"></div>
+  <div class="content">
+    <h2 style="color:#fff; font-size:clamp(4rem,10vw,9rem);">Now, the spots.</h2>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SPOT: READY OR NOT, HERE'S WINTER (white)
+     ============================================ -->
+<section class="section" data-section="16" data-label="Spot: Ready Or Not" data-name="Ready Or Not" style="position:relative;">
+  <div class="spot-watermark">01</div>
+  <div style="position:relative; z-index:1;">
+    <span class="tag" style="margin-bottom:12px; display:inline-block;">THE SOUND BRIDGE SPOT</span>
+    <p class="label" style="color:var(--secondary); margin-bottom:8px;">SPOT ONE -- DAY 5 -- WINTER 2028</p>
+    <h2>Ready Or Not,<br>Here's Winter</h2>
+    <p class="subtitle" style="margin-top:4px;">Outgrown Winter Clothes -- Kyle + 4 OCP</p>
+
+    <div style="border-radius:12px; overflow:hidden; margin:32px 0; max-height:500px;">
+      <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_20.png" alt="Ready Or Not hero" style="width:100%; object-fit:cover;" loading="lazy">
+    </div>
+
+    <p style="font-family:var(--font-quote); font-style:italic; font-size:0.95rem; color:var(--secondary); margin-bottom:24px;">Here are some of my favorite ideas for this spot --</p>
+
+    <div class="beat-list">
+      <div class="beat-item">
+        <h4>THE SOUND BRIDGE SEQUENCE</h4>
+        <p>The teen is in shorts. Walks outside with full teenage confidence. Hits the cold. "Pshhh." Bravado evaporates. High-pitched squeal -- which transitions to the steam from a pot on the gas stove. Kyle pulls the pot off. Someone puts chili on.</p>
+        <!-- Sound bridge flow boxes -->
+        <div class="sound-bridge-flow" style="margin-top:16px;">
+          <div class="sound-bridge-box">Teen squeals outside in the cold</div>
+          <div class="sound-bridge-arrow">&#8594;</div>
+          <div class="sound-bridge-box">High-pitched steam from pot on gas stove</div>
+          <div class="sound-bridge-arrow">&#8594;</div>
+          <div class="sound-bridge-box">Kyle pulls pot off / chili goes on</div>
+        </div>
+      </div>
+      <div class="beat-item">
+        <h4>A NOTE ON EMPATHY</h4>
+        <p>The idea of having to dress your kids in clothes that don't fit -- as a parent, it's such a frustrating experience. The kids get really grumpy. Reading this script was a bit emotional, to be honest. That's the kind of real feeling we want to capture here.</p>
+      </div>
+    </div>
+    <p class="directors-note" style="margin-top:16px;">Cast around: the dad. --Jonathan</p>
+
+    <div class="grid-2x4" style="margin:40px 0;">
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_1.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_2.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_4.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_5.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_6.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_7.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_8.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_9.gif" alt="" loading="lazy"></div>
+    </div>
+
+    <!-- Audio Storyboard for Ready Or Not -->
+    <div class="audio-storyboard" data-spot="winter">
+      <div class="audio-storyboard-title">
+        AUDIO STORYBOARD <span class="tag">:30</span>
+      </div>
+      <div class="storyboard-grid">
+        <div class="sb-panel" data-panel="0" style="background:url('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Ready-or-Note.-Winter--GNG_2_125.png') center/cover;"><span class="timecode" style="background:rgba(0,0,0,0.5); color:#fff; padding:2px 4px; border-radius:2px;">00:00</span></div>
+        <div class="sb-panel" data-panel="1" style="background:url('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Ready-or-Note.-Winter--clothes.gif') center/cover;"><span class="timecode" style="background:rgba(0,0,0,0.5); color:#fff; padding:2px 4px; border-radius:2px;">00:05</span></div>
+        <div class="sb-panel" data-panel="2" style="background:url('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Cold-Boy-Tea-Pot--GNG%20Gif%2013.mp4') center/cover;"><span class="timecode" style="background:rgba(0,0,0,0.5); color:#fff; padding:2px 4px; border-radius:2px;">00:10</span></div>
+        <div class="sb-panel" data-panel="3" style="background:url('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Ready-or-Note.-Winter--GNG_Winter_4.gif') center/cover;"><span class="timecode" style="background:rgba(0,0,0,0.5); color:#fff; padding:2px 4px; border-radius:2px;">00:15</span></div>
+        <div class="sb-panel" data-panel="4" style="background:url('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Ready-or-Note.-Winter--ezgif-54651b8537e8dc32.gif') center/cover;"><span class="timecode" style="background:rgba(0,0,0,0.5); color:#fff; padding:2px 4px; border-radius:2px;">00:20</span></div>
+        <div class="sb-panel" data-panel="5" style="background:url('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Ready-or-Note.-Winter--GNG_Winter_18.jpg') center/cover;"><span class="timecode" style="background:rgba(0,0,0,0.5); color:#fff; padding:2px 4px; border-radius:2px;">00:25</span></div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin-bottom:16px;">
+        <div class="sb-panel-label">Wide -- kitchen, teen getting ready</div>
+        <div class="sb-panel-label">Teen walks outside -- squeal</div>
+        <div class="sb-panel-label">Steam from pot -- sound bridge</div>
+        <div class="sb-panel-label">Kyle in kitchen -- pulls pot</div>
+        <div class="sb-panel-label">Coat zipper -- mom wrestling</div>
+        <div class="sb-panel-label">Dad at window -- "Seven."</div>
+      </div>
+      <div class="sb-controls">
+        <button class="sb-play-btn" data-target="winter" id="sb-play-winter">
+          <svg width="14" height="16" viewBox="0 0 14 16"><polygon points="0,0 14,8 0,16"/></svg>
+        </button>
+        <div class="sb-waveform">
+          <div class="sb-waveform-fill" id="sb-fill-winter"></div>
+          <div class="sb-waveform-bars" id="sb-bars-winter"></div>
+        </div>
+        <div class="sb-timecode-display" id="sb-timecode-winter">00:00</div>
+      </div>
+      <audio id="winter-audio" preload="auto">
+        <source src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Audio-Shell--Ready%20Or%20Not%20-%20Heres%20Winter%20-%20Audio%20Shell%20V2.mp3" type="audio/wav">
+      </audio>
+      <p style="font-style:italic; font-size:0.85rem; color:var(--text-muted); margin-top:16px;">Ready Or Not, Here's Winter is our first fully realized audio storyboard. In pre-production, we'll build these for every spot.</p>
+
+      <div class="director-note" id="dn-audiostoryboard" style="margin-top:20px;">
+        <div class="dn-photo"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--Jonathan.jpg" alt="JH" style="width:100%;height:100%;object-fit:cover;" loading="lazy"><span class="pip"></span></div>
+        <div class="dn-text">
+          <div class="dn-label">A note from the director</div>
+          <div class="dn-topic">What the audio storyboard means for production</div>
+        </div>
+        <div class="dn-wave"></div>
+        <button class="dn-play" onclick="dnTogglePlay('audiostoryboard')">&#9654;</button>
+        <span class="dn-dur">0:16</span>
+        <div class="dn-progress"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SPOT 02: KICK FALL OFF RIGHT (white)
+     ============================================ -->
+<section class="section" data-section="17" data-label="Spot 02" data-name="Spot 02: Kick Fall Off" style="position:relative;">
+  <div class="spot-watermark">02</div>
+  <div style="position:relative; z-index:1;">
+    <p class="label" style="color:var(--secondary); margin-bottom:8px;">SPOT TWO -- DAY 1 -- FALL 2026</p>
+    <h2>Kick Fall Off Right</h2>
+    <p class="subtitle" style="margin-top:4px;">Football Watch Party -- Kyle + 5 OCP + 8 Extras</p>
+
+    <div style="border-radius:12px; overflow:hidden; margin:32px 0; max-height:500px; position:relative;">
+      <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_KICK_17.png" alt="Kick Fall Off hero" style="width:100%; object-fit:cover;" loading="lazy">
+      <p class="label" style="position:absolute; bottom:12px; left:16px; background:rgba(0,0,0,0.6); color:#fff; padding:4px 10px; border-radius:4px; font-size:0.6rem;">KEY FRAME -- CROWDED LIVING ROOM, GAME ON TV, KYLE WITH FOAM FINGER</p>
+    </div>
+
+    <!-- Beat cards in LIST FORMAT -->
+    <p style="font-family:var(--font-quote); font-style:italic; font-size:0.95rem; color:var(--secondary); margin-bottom:24px;">Here are some of my favorite ideas for this spot --</p>
+    <div class="beat-list">
+      <div class="beat-item">
+        <h4>THERMOSTAT BUMP TO 72</h4>
+        <p>Here's the idea: add a short line. Two girls come in from outside: 'It's freezing!' As they pass Kyle, she does a choreographed little dance move -- reaches out and bumps the thermostat up to 72 without breaking stride. 'That's why GNG keeps it simple with great rates and reliable service.' The move should feel smooth and intentional, like part of her walk.</p>
+      </div>
+      <div class="beat-item">
+        <h4>THE MISSED HIGH FIVE</h4>
+        <p>The team is down. The energy is off. Kyle goes for the foam finger high five but the guy doesn't return it -- he's deflated, distracted. She keeps walking, unfazed. What if we save the high five for the very end of the spot? A good button -- when the energy finally comes back.</p>
+      </div>
+      <div class="beat-item">
+        <h4>OVEN DOOR ASSIST</h4>
+        <p>Here's the scene: a woman is in the kitchen holding a game day dish with both hands. She turns around -- 'Does someone mind opening the oven?' Kyle is already right there. Mid-stride, she pops the oven door open. The woman slides the dish in without breaking stride. It's seamless -- choreography. The camera never stops moving.</p>
+      </div>
+      <div class="beat-item">
+        <h4>TWO STOOLS</h4>
+        <p>My idea: Kyle doesn't just grab one stool -- she grabs two. It's a Rube Goldberg moment. She sees two people walking up, looking for a seat in this packed room. She has the premonition -- she knows what they need before they do. She races both stools into position. They sit. She's already gone.</p>
+      </div>
+      <div class="beat-item">
+        <h4>THE SMOOTH CATCH</h4>
+        <p>Someone across the room yells for a soda. Don't do the classic football toss -- that's boring. This should be flow state. Kyle throws it smooth, someone catches it like butter. Everyone in the room watches. The catch is so clean it becomes a moment. That's the energy we want.</p>
+      </div>
+    </div>
+    <p class="directors-note" style="margin-top:16px;">Cast around: the woman at the oven or the soda catcher.</p>
+
+    <div class="grid-2x4" style="margin:40px 0;">
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_KICK_1.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_KICK_2.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_KICK_4.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_KICK_5.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_KICK_6.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_KICK_9.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_2_26.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_2_28.gif" alt="" loading="lazy"></div>
+    </div>
+
+    <p class="directors-note" style="text-align:right; margin-top:8px;">the foam finger stays in her hand the whole spot --Jonathan</p>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SPOT 03: LOTS TO BE THANKFUL FOR (blue)
+     ============================================ -->
+<section class="section section-blue" data-section="18" data-label="Spot 03" data-name="Spot 03: Thankful" style="position:relative;">
+  <div class="spot-watermark">03</div>
+  <div style="position:relative; z-index:1;">
+    <span class="tag" style="margin-bottom:12px; display:inline-block;">THE HANDSHAKE SPOT</span>
+    <p class="label" style="margin-bottom:8px;">SPOT THREE -- DAY 2 -- FALL 2026</p>
+    <h2>Lots To Be<br>Thankful For</h2>
+    <p class="subtitle">Thanksgiving Feast -- Kyle + 5 OCP + 3 Extras</p>
+
+    <div style="border-radius:12px; overflow:hidden; margin:32px 0; max-height:500px;">
+      <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_2_131.png" alt="Thankful hero" style="width:100%; object-fit:cover;" loading="lazy">
+    </div>
+
+    <p style="font-family:var(--font-quote); font-style:italic; font-size:0.95rem; color:var(--secondary); margin-bottom:24px;">Here are some of my favorite ideas for this spot --</p>
+    <div class="beat-list">
+      <div class="beat-item">
+        <h4>PIE HANDOFF</h4>
+        <p>Kyle hands the pie to the kids -- not placing it on the table, handing it directly to them. Better handshake. One of them immediately sticks his finger in it. Mischievous.</p>
+      </div>
+      <div class="beat-item">
+        <h4>GIVE IT A MINUTE</h4>
+        <p>The woman warns the uncle with calm authority. Kyle taps him on the shoulder, which causes the oven door to swing shut like a springboard. Big satisfying bang. Good sound beat. She guides him into the living room.</p>
+      </div>
+      <div class="beat-item" style="border-left-color:var(--primary); border-left-width:4px;">
+        <h4 style="color:var(--primary);">GRANDPA MUG PREMONITION</h4>
+        <p>Football on TV. Grandpa asleep, mug in hand. Kyle picks up the ballet pace, rushes over, grabs the mug just as the cheer erupts. Grandpa wakes up. She hands it back. Then turns and flips on the gas fireplace. Three beats. Three seconds. Done.</p>
+      </div>
+      <div class="beat-item">
+        <h4>THE EXIT -- TURN ON THE LIGHT</h4>
+        <p>Everyone walks in for dinner: "Let's eat!" Kyle is walking toward the front door, leaving. Someone calls out: "Can someone turn on the light?" She flips the switch on her way out. "Because these days, simple is what you need. GNG -- it's that simple."</p>
+      </div>
+    </div>
+    <p class="directors-note" style="margin-top:16px;">Cast around: Grandpa asleep in the chair.</p>
+
+
+    <div class="grid-2x4" style="margin:40px 0;">
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_Thanksgiving_1.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_Thanksgiving_2.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_Thanksgiving_11.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_Thanksgiving_12.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_Thanksgiving_14.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_Thanksgiving_15.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_Thanksgiving_16.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_Thanksgiving_18.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+    </div>
+
+    <div style="text-align:center; margin:48px 0;">
+      <p class="quote" style="color:rgba(255,255,255,0.9);">"Thanksgiving is when we fill up on food... and our families."</p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ============================================
+     SPOT 04: DAD IN DEEP (white)
+     ============================================ -->
+<section class="section" data-section="19" data-label="Spot 04" data-name="Spot 04: Dad In Deep" style="position:relative;">
+  <div class="spot-watermark">04</div>
+  <div style="position:relative; z-index:1;">
+    <p class="label" style="color:var(--secondary); margin-bottom:8px;">SPOT FOUR -- DAY 3 -- WINTER 2027</p>
+    <h2>Dad In Deep</h2>
+    <p class="subtitle" style="margin-top:4px;">Kitchen Chaos -- Kyle + 4 OCP</p>
+
+    <div style="border-radius:12px; overflow:hidden; margin:32px 0; max-height:500px;">
+      <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_2_119.png" alt="Dad In Deep hero" style="width:100%; object-fit:cover;" loading="lazy">
+    </div>
+
+    <p class="body-text" style="font-size:1.15rem; font-weight:500; margin-bottom:32px;">Manwich commercial energy. Everything going wrong at once.</p>
+    <p style="font-family:var(--font-mono); font-size:0.75rem; color:var(--secondary); margin-top:8px; letter-spacing:0.08em;">SEE: MANWICH -- A SPOT I DIRECTED (MY WORK PAGE)</p>
+
+    <p style="font-family:var(--font-quote); font-style:italic; font-size:0.95rem; color:var(--secondary); margin-bottom:24px;">Here are some of my favorite ideas for this spot --</p>
+    <div class="beat-list">
+      <div class="beat-item">
+        <h4>TEA BAG SEQUENCE</h4>
+        <p>Fast with sound design. Dad pours hot water, hands it to mom, she dunks the tea bag. There's a lot happening all at once -- we can make this a fun viewer experience with layered sound.</p>
+      </div>
+      <div class="beat-item">
+        <h4>"MENU"</h4>
+        <p>When Kyle says "menu," dad remembers something's cooking in the oven. Arrested Development vibes -- Will Arnett energy. He rushes to the oven door. Dad and son wince at the burnt food. Son: "Do you know long division?" Just trying to get a second with his dad.</p>
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <div style="border-radius:6px; overflow:hidden; flex:1;"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-9.19032026--arrested-dev-1.gif" alt="Arrested Development" style="width:100%; height:160px; object-fit:cover;" loading="lazy"></div>
+          <div style="border-radius:6px; overflow:hidden; flex:1;"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-9.19032026--arrested-dev-2.gif" alt="Arrested Development" style="width:100%; height:160px; object-fit:cover;" loading="lazy"></div>
+        </div>
+        <p style="font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); margin-top:4px; letter-spacing:0.08em;">ARRESTED DEVELOPMENT ENERGY</p>
+      </div>
+      <div class="beat-item">
+        <h4>PIZZA = SURRENDER</h4>
+        <p>Kyle has the premonition. Before the kid even says it, she pulls up pizza delivery restaurants on her phone: 'Hey Siri, pull up nearby pizza delivery.' Then the kid says: 'Can we order pizza?' Kyle hands the phone directly to dad. He's ready. 'Because these days, simple is just what you need.'</p>
+      </div>
+    </div>
+    <p class="directors-note" style="margin-top:16px;">Cast around: the dad. Kyle is more chill in this one -- watching dad be in the deep.</p>
+    <p class="directors-note" style="margin-top:8px;">Arrested Development vibes. Find a Will Arnett GIF reference.</p>
+
+    <div class="grid-2x4" style="margin:40px 0;">
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_Dad_2.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_Dad_11.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_Dad_19.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_2_33.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_2_36.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_Dad_1.png" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_Dad_10.png" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_Dad_12.png" alt="" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Fun Fact Interstitial (blue) -->
+<section class="section section-blue fun-fact-section" data-name="Fun Fact 2" style="min-height:auto; padding:80px;">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; max-width:900px; margin:0 auto;">
+    <div>
+      <p class="quote" style="color:#fff;">"This is my tent setup in my basement -- in preparation for my four and five year old daughters to eventually sleep outside."</p>
+      <p style="font-family:var(--font-mono); font-size:0.7rem; color:rgba(255,255,255,0.5); margin-top:12px; letter-spacing:0.1em;">-- JONATHAN</p>
+    </div>
+    <div class="img-rounded" style="max-height:300px; overflow:hidden;">
+      <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jonathan-Personal--IMG_1163.jpeg" alt="Jonathan's actual tent in the living room" style="width:100%; height:100%; object-fit:cover; object-position:center 85%;" loading="lazy">
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ============================================
+     SPOT 05: CAMPING IN (blue)
+     ============================================ -->
+<section class="section section-blue" data-section="20" data-label="Spot 05" data-name="Spot 05: Camping In" style="position:relative;">
+  <div class="spot-watermark">05</div>
+  <div style="position:relative; z-index:1;">
+    <p class="label" style="margin-bottom:8px;">SPOT FIVE -- DAY 4 -- FALL 2027</p>
+    <h2>Camping In</h2>
+    <p class="subtitle">Indoor Campout -- Kyle + 4 OCP + 2 Extras -- Blue Neckerchief</p>
+
+    <div style="border-radius:12px; overflow:hidden; margin:32px 0; max-height:500px;">
+      <img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_14.png" alt="Camping In hero" style="width:100%; object-fit:cover;" loading="lazy">
+    </div>
+
+    <p class="body-text" style="font-size:1.15rem; font-weight:500; margin-bottom:32px;">NOT REI. NOT Moonrise Kingdom. Kids making do.</p>
+
+    <p style="font-family:var(--font-quote); font-style:italic; font-size:0.95rem; color:rgba(255,255,255,0.7); margin-bottom:24px;">Here are some of my favorite ideas for this spot --</p>
+    <div class="beat-list">
+      <div class="beat-item">
+        <h4>INSIDE, INSIDE, WE'RE INSIDE</h4>
+        <p>Kyle: 'Well below freezing. Tonight's camp out is officially a camp in.' Dad walks by the kids who are trying to start a fire with flint and steel in the living room. 'Inside, inside, we're inside.' This becomes the running joke -- every time the kids try to do an outdoor activity indoors, dad circles back with the same line.</p>
+      </div>
+      <div class="beat-item">
+        <h4>FIREPLACE FLIP</h4>
+        <p>Right after dad tells the kids they're inside, Kyle flips on the gas fireplace. The kids go 'ooh' and 'ahh' -- it replaces their failed flint-and-steel fire. 'In shopping for gas isn't on the activity list.' The fireplace moment lands here in the script, right after the camp-in declaration.</p>
+      </div>
+      <div class="beat-item">
+        <h4>THAT WAY TO THE FRIDGE</h4>
+        <p>Kyle passes two boys -- one has a map unfolded, the other has a compass. She looks over their shoulder and subtly points toward what would be north. They look at each other: 'That way to the fridge.' And go the other direction. She follows.</p>
+      </div>
+      <div class="beat-item">
+        <h4>MESS KIT COOKING</h4>
+        <p>Kyle follows to the kitchen. The kids are cooking stew on the stovetop with camping mess kits and pocket knives. Ingredients everywhere. Dad circles back through the kitchen: 'Inside!' He can't believe they're doing this in the house. The kids always want to make fire. Dad always wants to push it outside. But this is camping IN. That tension is the recurring joke.</p>
+      </div>
+      <div class="beat-item">
+        <h4>FLASHLIGHT MOMENT</h4>
+        <p>Lights go down. Kyle turns on her flashlight first -- a fun, spooky, cute little moment. The kids laugh and grab theirs. Dad, one more time: 'Inside. Inside.' He can't help himself.</p>
+      </div>
+    </div>
+    <p class="directors-note" style="margin-top:16px;">Cast around: the dad. He IS the spot. The 'inside' guy carries the whole thing. --Jonathan</p>
+
+    <div class="grid-2x4" style="margin:40px 0;">
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_12.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_20.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_24.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_25.gif" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_1.png" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_2.png" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_10.png" alt="" loading="lazy"></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_11.png" alt="" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 21: CAMERA & MOVEMENT (white)
+     ============================================ -->
+<section class="section" data-section="21" data-label="Camera" data-name="Camera & Movement">
+  <h2>Camera &<br>Movement</h2>
+  <p class="body-text" style="margin:16px 0 32px;">Steadicam with planned cuts. Not true one-take but feels like one.</p>
+
+  <!-- John Lewis Reference GIFs -->
+  <div style="margin-bottom:48px;">
+    <div style="background:var(--card-bg); border-left:4px solid var(--secondary); border-radius:0 10px 10px 0; padding:24px 32px; max-width:600px; margin-bottom:24px;">
+      <p class="label" style="margin-bottom:8px;">Reference</p>
+      <h4 style="font-family:var(--font-headline); font-size:1.4rem; color:var(--primary);">John Lewis "Tiny Dancer"</h4>
+      <p style="font-size:0.95rem; margin-top:8px; color:var(--text); line-height:1.6;">The domestic walk-and-talk commercial reference.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:8px;">
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-John-Lewis-Spot--John%20Lewis%20Gif%201.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="John Lewis 1"></video></div>
+      <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-John-Lewis-Spot--John%20Lewis%20Gif%202.gif" alt="John Lewis 2" loading="lazy"></div>
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-John-Lewis-Spot--John%20Lewis%20Gif%203.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="John Lewis 3"></video></div>
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-John-Lewis-Spot--John%20Lewis%20Gif%204.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="John Lewis 4"></video></div>
+      <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-John-Lewis-Spot--John%20Lewis%20Gif%205.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title="John Lewis 5"></video></div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(5,1fr); grid-template-rows:repeat(4,1fr); gap:8px;">
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_7.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_10.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_12.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_13.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_15.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_17.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_19.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_20.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_21.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_22.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_23.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_25.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_29.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_30.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_31.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_34.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_38.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_39.gif" alt="" loading="lazy"></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_Camera_1.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+    <div class="img-rounded"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_Camera_18.mp4" autoplay loop muted playsinline style="width:100%;display:block;" title=""></video></div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 22: JORDAN McGONAGLE -- DP (white)
+     ============================================ -->
+<section class="section" data-section="22" data-label="Jordan -- DP" data-name="Jordan McGonagle">
+  <h2>Jordan McGonagle<br>Director of Photography</h2>
+
+  <div class="grid-2" style="margin-top:40px; align-items:start;">
+    <div>
+      <div style="border-left:4px solid var(--secondary); padding:20px 28px; background:var(--card-bg); border-radius:0 10px 10px 0; margin-bottom:24px;">
+        <p style="font-family:var(--font-quote); font-style:italic; font-size:1.05rem; color:var(--text); line-height:1.5;">"It's about putting people in a comfortable environment and finding those moments -- the light hitting at the right time, the kid laughing at the right time. You can't fake those. You just have to have a second sense."</p>
+        <p style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted); margin-top:12px; letter-spacing:0.1em;">-- JORDAN McGONAGLE, DP</p>
+      </div>
+
+      <p class="body-text">Jordan brings modern cinema glass and an eye for elevated naturalism. His approach: use anamorphic lenses to give domestic scenes a cinematic quality without feeling stylized. The squeeze-desqueeze process creates pleasing background bokeh and subtly elevates the human face.</p>
+
+      <p class="body-text" style="margin-top:16px;">For GNG 2.0, Jordan's recipe: warm, controlled lighting. Anamorphic where we can. Not boxing ourselves in -- set the stage, then find the magic once all the pieces are in place.</p>
+    </div>
+    <div>
+      <div style="border-radius:12px; overflow:hidden; margin-bottom:16px; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Kessler%20Charters.mp4')">
+        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Kessler%20Charters.mp4" style="width:100%; display:block;" muted preload="none"></video>
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.3);">
+          <div style="width:48px; height:48px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff;">&#9654;</div>
+        </div>
+      </div>
+      <p class="label" style="text-align:center;">KESSLER CHARTERS -- STEADICAM</p>
+    </div>
+  </div>
+
+  <p class="label" style="margin:40px 0 16px;">JORDAN'S REEL -- KEY STEADICAM / GIMBAL WORK</p>
+  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
+    <div style="border-radius:10px; overflow:hidden; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--001615_THD_FY23_MOVERS_02_RENTERS_POSTMOVE_IndoorFurnish_OutdoorPatio_15_16x9_YHTFD00IZ30H_WEB.mp4')">
+      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--001615_THD_FY23_MOVERS_02_RENTERS_POSTMOVE_IndoorFurnish_OutdoorPatio_15_16x9_YHTFD00IZ30H_WEB.mp4" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="none"></video>
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><div style="width:32px; height:32px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;">&#9654;</div></div>
+      <p style="position:absolute; bottom:4px; left:8px; font-family:var(--font-mono); font-size:8px; color:#fff; letter-spacing:0.08em;">THD REUBAN</p>
+    </div>
+    <div style="border-radius:10px; overflow:hidden; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--NCAA%20Madness%20Live%2030%20Generic_2398_1080_03-Large%20540p.mp4')">
+      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--NCAA%20Madness%20Live%2030%20Generic_2398_1080_03-Large%20540p.mp4" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="none"></video>
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><div style="width:32px; height:32px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;">&#9654;</div></div>
+      <p style="position:absolute; bottom:4px; left:8px; font-family:var(--font-mono); font-size:8px; color:#fff; letter-spacing:0.08em;">NCAA -- STEADICAM</p>
+    </div>
+    <div style="border-radius:10px; overflow:hidden; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--ATT%20Courtneys%20Holiday%20Surprise.mp4')">
+      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--ATT%20Courtneys%20Holiday%20Surprise.mp4" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="none"></video>
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><div style="width:32px; height:32px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;">&#9654;</div></div>
+      <p style="position:absolute; bottom:4px; left:8px; font-family:var(--font-mono); font-size:8px; color:#fff; letter-spacing:0.08em;">ATT -- STEADICAM</p>
+    </div>
+    <div style="border-radius:10px; overflow:hidden; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Samsung_30_Prores-Apple%20Devices%20HD%20(Best%20Quality) copy.mp4')">
+      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Samsung_30_Prores-Apple%20Devices%20HD%20(Best%20Quality) copy.mp4" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="none"></video>
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><div style="width:32px; height:32px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;">&#9654;</div></div>
+      <p style="position:absolute; bottom:4px; left:8px; font-family:var(--font-mono); font-size:8px; color:#fff; letter-spacing:0.08em;">SAMSUNG</p>
+    </div>
+  </div>
+
+  <div style="border-left:4px solid var(--primary); padding:16px 24px; background:var(--card-bg); border-radius:0 8px 8px 0; margin-top:32px; max-width:700px;">
+    <p class="body-text" style="margin:0; font-size:0.9rem;">"We should consider modern cinema glass -- shooting in 2:1 aspect ratio where possible. Anamorphic lenses give us a really modern look. When we see something shot with anamorphic glass, we think blockbuster. We think Raiders of the Lost Ark. We think big features." <span style="font-family:var(--font-mono); font-size:9px; color:var(--text-muted);">-- JORDAN</span></p>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 23: MY WORK (blue)
+     ============================================ -->
+<section class="section section-blue" data-section="22" data-label="My Work" data-name="My Work">
+  <h2>My Work</h2>
+  <p class="body-text" style="margin-top:16px; max-width:700px;">Reference spots that show the range. Domestic chaos, physical comedy, production value.</p>
+
+  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:24px; margin-top:48px;">
+    <!-- Racetrac -->
+    <div class="card card-white" style="padding:0; overflow:hidden;">
+      <div style="aspect-ratio:16/9; overflow:hidden; position:relative; cursor:pointer;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--racetrac_-_homecoming_v1%20(720p).mp4')">
+        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Racetrac%20Gif%201.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover;" title="Racetrac"></video>
+        <div style="position:absolute; bottom:8px; left:8px; background:rgba(0,0,0,0.6); color:#fff; font-family:var(--font-mono); font-size:0.6rem; padding:4px 10px; border-radius:4px; letter-spacing:0.15em; text-transform:uppercase;">PLAY</div>
+      </div>
+      <div style="padding:20px;">
+        <h4 style="font-family:var(--font-headline); font-size:1.4rem; color:var(--primary);">Racetrac</h4>
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-top:8px;">Higher production value. Energy and scale.</p>
+        <div style="display:flex; gap:6px; margin-top:12px;">
+          <div style="border-radius:4px; overflow:hidden; flex:1;"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Racetrac%20Gif%202.mp4" autoplay loop muted playsinline style="width:100%; height:50px; object-fit:cover;" title="Racetrac 2"></video></div>
+        </div>
+      </div>
+    </div>
+    <!-- Manwich -->
+    <div class="card card-white" style="padding:0; overflow:hidden;">
+      <div style="aspect-ratio:16/9; overflow:hidden; position:relative; cursor:pointer;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--manwich__welcome_home__v1%20(720p).mp4')">
+        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Manwhich%20Gif%201.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover;" title="Manwich"></video>
+        <div style="position:absolute; bottom:8px; left:8px; background:rgba(0,0,0,0.6); color:#fff; font-family:var(--font-mono); font-size:0.6rem; padding:4px 10px; border-radius:4px; letter-spacing:0.15em; text-transform:uppercase;">PLAY</div>
+      </div>
+      <div style="padding:20px;">
+        <h4 style="font-family:var(--font-headline); font-size:1.4rem; color:var(--primary);">Manwich</h4>
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-top:8px;">Kitchen chaos. The domestic energy we're going for with Dad In Deep.</p>
+        <div style="display:flex; gap:6px; margin-top:12px;">
+          <div style="border-radius:4px; overflow:hidden; flex:1;"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Manwhich%20Gif%202.mp4" autoplay loop muted playsinline style="width:100%; height:50px; object-fit:cover;" title="Manwich 2"></video></div>
+          <div style="border-radius:4px; overflow:hidden; flex:1;"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Manwhich%20Gif%203.mp4" autoplay loop muted playsinline style="width:100%; height:50px; object-fit:cover;" title="Manwich 3"></video></div>
+          <div style="border-radius:4px; overflow:hidden; flex:1;"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Manwhich%20Gif%204.mp4" autoplay loop muted playsinline style="width:100%; height:50px; object-fit:cover;" title="Manwich 4"></video></div>
+          <div style="border-radius:4px; overflow:hidden; flex:1;"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Manwhich%20Gif%205.mp4" autoplay loop muted playsinline style="width:100%; height:50px; object-fit:cover;" title="Manwich 5"></video></div>
+        </div>
+      </div>
+    </div>
+    <!-- Farm Rich -->
+    <div class="card card-white" style="padding:0; overflow:hidden;">
+      <div style="aspect-ratio:16/9; overflow:hidden; position:relative; cursor:pointer;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--farm_rich_wings_30_v1%20(720p).mp4')">
+        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Farm%20Rich%20Gif%201.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover;" title="Farm Rich"></video>
+        <div style="position:absolute; bottom:8px; left:8px; background:rgba(0,0,0,0.6); color:#fff; font-family:var(--font-mono); font-size:0.6rem; padding:4px 10px; border-radius:4px; letter-spacing:0.15em; text-transform:uppercase;">PLAY</div>
+      </div>
+      <div style="padding:20px;">
+        <h4 style="font-family:var(--font-headline); font-size:1.4rem; color:var(--primary);">Farm Rich</h4>
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-top:8px;">The dad catching the plate. Physical comedy with heart.</p>
+        <div style="display:flex; gap:6px; margin-top:12px;">
+          <div style="border-radius:4px; overflow:hidden; flex:1;"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Farm%20Rich%20Gif%202.mp4" autoplay loop muted playsinline style="width:100%; height:50px; object-fit:cover;" title="Farm Rich 2"></video></div>
+          <div style="border-radius:4px; overflow:hidden; flex:1;"><video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Farm%20Rich%20Gif%203.mp4" autoplay loop muted playsinline style="width:100%; height:50px; object-fit:cover;" title="Farm Rich 3"></video></div>
+          <div style="border-radius:4px; overflow:hidden; flex:1;"><img src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--Farm%20Rich%20Gif%204.gif" alt="Farm Rich 4" style="width:100%; height:50px; object-fit:cover;" loading="lazy"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Nature's Own -->
+    <div class="card card-white" style="padding:0; overflow:hidden;">
+      <div style="aspect-ratio:16/9; overflow:hidden; position:relative; cursor:pointer;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--natures-own-compassion-30.mp4')">
+        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Jonathans-projects--natures-own-compassion-30.mp4" style="width:100%; height:100%; object-fit:cover;" muted preload="none"></video>
+        <div style="position:absolute; bottom:8px; left:8px; background:rgba(0,0,0,0.6); color:#fff; font-family:var(--font-mono); font-size:0.6rem; padding:4px 10px; border-radius:4px; letter-spacing:0.15em; text-transform:uppercase;">PLAY</div>
+      </div>
+      <div style="padding:20px;">
+        <h4 style="font-family:var(--font-headline); font-size:1.4rem; color:var(--primary);">Nature's Own -- Compassion</h4>
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-top:8px;">Walk and talk. Father and son. Warm storytelling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SECTION 23: CLOSING (blue)
+     ============================================ -->
+<section id="closing" class="section section-blue" data-section="22" data-label="Closing" data-name="Closing" style="min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+  <h1 style="color:#fff; font-size:clamp(4rem, 12vw, 12rem); margin-bottom:32px;">I Hate Goodbyes.</h1>
+  <p class="quote" style="max-width:640px; margin:0 auto 32px; color:var(--secondary);">So let's just keep working together instead.</p>
+  <p style="font-family:var(--font-body); font-size:1rem; color:rgba(255,255,255,0.7); max-width:600px; margin:24px auto 32px; line-height:1.7;">Seriously though -- we know this world. The 1.0 versions were fantastic. Kyle was great. Let's make this a dance. Let's do this.</p>
+  <p style="font-family:var(--font-body); font-weight:500; color:rgba(255,255,255,0.6); letter-spacing:0.1em;">Jonathan Hayes / Ammunition / Atlanta, GA</p>
+  <div class="breathing-pip"></div>
+</section>
+
+
+<!-- ============================================
+     JAVASCRIPT
+     ============================================ -->
+<script>
+(function() {
+  'use strict';
+
+  // ==========================================
+  // SECTION REGISTRY
+  // ==========================================
+  const sections = Array.from(document.querySelectorAll('.section'));
+  const sectionNames = sections.map(s => s.dataset.name || s.dataset.label || 'Section');
+  let currentSection = 0;
+
+  // ==========================================
+  // NAVIGATION DOTS
+  // ==========================================
+  const navDotsContainer = document.getElementById('nav-dots');
+  sectionNames.forEach((name, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.innerHTML = '<span class="tooltip">' + name + '</span>';
+    dot.addEventListener('click', () => {
+      sections[i].scrollIntoView({ behavior: 'smooth' });
+    });
+    navDotsContainer.appendChild(dot);
+  });
+  const navDots = navDotsContainer.querySelectorAll('.nav-dot');
+
+  // ==========================================
+  // DASHBOARD
+  // ==========================================
+  const dashboard = document.getElementById('dashboard');
+  const dashToggle = document.getElementById('dash-toggle');
+  const dashClose = document.getElementById('dash-close');
+  const dashSections = document.getElementById('dash-sections');
+
+  // Build section cards
+  sectionNames.forEach((name, i) => {
+    const card = document.createElement('div');
+    card.className = 'dash-card';
+    card.innerHTML = '<div class="dash-label">' + name + '</div><div class="dash-sub">Section ' + (i+1) + '</div>';
+    card.addEventListener('click', () => {
+      dashboard.classList.remove('open');
+      sections[i].scrollIntoView({ behavior: 'smooth' });
+    });
+    dashSections.appendChild(card);
+  });
+
+  dashToggle.addEventListener('click', () => {
+    dashboard.classList.add('open');
+  });
+  dashClose.addEventListener('click', () => {
+    dashboard.classList.remove('open');
+  });
+
+  // Dashboard navigation helper
+  window.dashGoTo = function(label) {
+    dashboard.classList.remove('open');
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].dataset.label && sections[i].dataset.label.indexOf(label) !== -1) {
+        sections[i].scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+    }
+  };
+
+  // Escape key closes dashboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && dashboard.classList.contains('open')) {
+      dashboard.classList.remove('open');
+    }
+  });
+
+  // D key toggles dashboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'd' || e.key === 'D') {
+      if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        dashboard.classList.toggle('open');
+      }
+    }
+  });
+
+  // ==========================================
+  // INTERSECTION OBSERVER
+  // ==========================================
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        const idx = sections.indexOf(entry.target);
+        if (idx !== -1) {
+          currentSection = idx;
+          updateNav(idx);
+        }
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '-50px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  function updateNav(idx) {
+    document.getElementById('page-counter').textContent =
+      String(idx + 1).padStart(2, '0') + ' / ' + String(sections.length).padStart(2, '0');
+    document.getElementById('section-name').textContent = sectionNames[idx];
+    navDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    // Dashboard section cards highlight
+    var dashCards = dashSections.querySelectorAll('.dash-card');
+    dashCards.forEach((m, i) => m.style.borderColor = i === idx ? 'var(--secondary)' : 'rgba(255,255,255,0.08)');
+  }
+
+  // ==========================================
+  // PROGRESS BAR
+  // ==========================================
+  const progressBar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = progress + '%';
+  }, { passive: true });
+
+  // ==========================================
+  // KEYBOARD NAV
+  // ==========================================
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    // Collect all scroll stops: sections + key landmarks within tall sections
+    var stops = [];
+    document.querySelectorAll('section').forEach(function(sec) {
+      stops.push(sec);
+      // Also add key landmarks inside this section
+      sec.querySelectorAll('.timeline-container, .audio-storyboard, .beat-list, .grid-2x4').forEach(function(el) {
+        stops.push(el);
+      });
+    });
+    // Sort by document position
+    stops.sort(function(a, b) {
+      return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
+    });
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      for (var i = 0; i < stops.length; i++) {
+        var rect = stops[i].getBoundingClientRect();
+        if (rect.top > 80) {
+          stops[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+      }
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      for (var i = stops.length - 1; i >= 0; i--) {
+        var rect = stops[i].getBoundingClientRect();
+        if (rect.top < -80) {
+          stops[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+    }
+  });
+
+  // ==========================================
+  // CURSOR GLOW
+  // ==========================================
+  const cursorGlow = document.getElementById('cursor-glow');
+  let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function animateGlow() {
+    glowX += (mouseX - glowX) * 0.08;
+    glowY += (mouseY - glowY) * 0.08;
+    cursorGlow.style.left = glowX + 'px';
+    cursorGlow.style.top = glowY + 'px';
+    requestAnimationFrame(animateGlow);
+  }
+  animateGlow();
+
+  // ==========================================
+  // MAGNETIC TILT ON CARDS
+  // ==========================================
+  document.querySelectorAll('.card, .beat-item, .tool-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = 'perspective(800px) rotateY(' + (x * 4) + 'deg) rotateX(' + (-y * 4) + 'deg) translateX(4px)';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  // ==========================================
+  // WAVEFORM BARS (sound bridge + transitions)
+  // ==========================================
+  function generateWaveformBars(container, count) {
+    if (!container) return;
+    for (let i = 0; i < count; i++) {
+      const bar = document.createElement('span');
+      const h = Math.random() * 80 + 20;
+      bar.style.height = h + '%';
+      bar.style.animationDelay = (i * 0.05) + 's';
+      container.appendChild(bar);
+    }
+  }
+
+  document.querySelectorAll('.waveform-animated').forEach(w => {
+    generateWaveformBars(w, 30);
+  });
+
+  // ==========================================
+  // AUDIO STORYBOARD PLAYER (BRIGHT THEME)
+  // ==========================================
+  function generateSbBars(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    for (let i = 0; i < 60; i++) {
+      const bar = document.createElement('span');
+      bar.style.height = (Math.random() * 70 + 15) + '%';
+      container.appendChild(bar);
+    }
+  }
+
+  generateSbBars('sb-bars-winter');
+
+  // Winter audio storyboard -- real WAV playback
+  (function() {
+    var winterPlayBtn = document.getElementById('sb-play-winter');
+    var winterAudio = document.getElementById('winter-audio');
+    if (!winterPlayBtn || !winterAudio) return;
+
+    winterPlayBtn.addEventListener('click', function() {
+      var storyboard = this.closest('.audio-storyboard');
+      var panels = storyboard.querySelectorAll('.sb-panel');
+      var fill = document.getElementById('sb-fill-winter');
+      var timecodeDisplay = document.getElementById('sb-timecode-winter');
+      var isPlaying = this.classList.contains('playing');
+
+      if (isPlaying) {
+        this.classList.remove('playing');
+        winterAudio.pause();
+        winterAudio.currentTime = 0;
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        if (fill) fill.style.width = '0%';
+        if (timecodeDisplay) timecodeDisplay.textContent = '00:00';
+        if (this._interval) clearInterval(this._interval);
+        return;
+      }
+
+      this.classList.add('playing');
+      winterAudio.currentTime = 0;
+      winterAudio.play();
+
+      var totalDuration = 30; // 30 second spot
+      var panelDuration = totalDuration / panels.length;
+      var currentPanel = 0;
+
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      if (panels[0]) panels[0].classList.add('active');
+
+      var self = this;
+      this._interval = setInterval(function() {
+        var currentTime = winterAudio.currentTime;
+        var progress = (currentTime / totalDuration) * 100;
+        if (fill) fill.style.width = Math.min(progress, 100) + '%';
+
+        var seconds = Math.floor(currentTime);
+        if (timecodeDisplay) timecodeDisplay.textContent = '00:' + String(seconds).padStart(2, '0');
+
+        var newPanel = Math.floor(currentTime / panelDuration);
+        if (newPanel !== currentPanel && newPanel < panels.length) {
+          panels.forEach(function(p) { p.classList.remove('active'); });
+          panels[newPanel].classList.add('active');
+          currentPanel = newPanel;
+        }
+
+        if (currentTime >= totalDuration || winterAudio.ended) {
+          clearInterval(self._interval);
+          self.classList.remove('playing');
+          winterAudio.pause();
+          winterAudio.currentTime = 0;
+          panels.forEach(function(p) { p.classList.remove('active'); });
+          if (fill) fill.style.width = '0%';
+          if (timecodeDisplay) timecodeDisplay.textContent = '00:00';
+        }
+      }, 100);
+    });
+  })();
+
+  // ==========================================
+  // MOOD REEL EXPLORER
+  // ==========================================
+  const shotLibrary = document.getElementById('shot-library');
+  const moodTimeline = document.getElementById('mood-timeline');
+  const timelineSlots = moodTimeline ? moodTimeline.querySelectorAll('.timeline-slot') : [];
+
+  const shotSources = [
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_10.gif', label: 'Door Open' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_22.gif', label: 'Thermostat' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_KICK_4.mp4', label: 'Oven' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-2.Lots-to-be-Thankful-for--GNG_Thanksgiving_14.mp4', label: 'Mug Save' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-1.Kick-fall-off--GNG_KICK_5.gif', label: 'Cheer' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_12.gif', label: 'Fireplace' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-3.Camping-in--GNG_Camping_20.gif', label: 'Blanket Fort' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-5.Ready-or-not-winter--GNG_Winter_1.gif', label: 'Coat Zipper' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-0.General--GNG_General_2.gif', label: 'General 1' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-0.General--GNG_General_4.gif', label: 'General 2' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-0.General--GNG_General_11.gif', label: 'General 3' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-0.General--GNG_General_13.gif', label: 'General 4' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_Dad_2.gif', label: 'Dad 1' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-4.Dad-in-deep--GNG_Dad_11.gif', label: 'Dad 2' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_Camera_1.mp4', label: 'Camera 1' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/creative-7.Camera-Performance--GNG_2_38.gif', label: 'Camera 2' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%201.mp4', label: 'Kyle Walk' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%203.mp4', label: 'Kyle Exchange' },
+    { src: 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-GNG-Spot-GIFs--GNG%20Gif%207.mp4', label: 'Kyle Scene' }
+  ];
+
+  // Pre-fill timeline with first 8 shots
+  const timelineData = shotSources.slice(0, 10).map(s => s.src);
+  let draggedShotSrc = null;
+  let draggedShotEl = null;
+
+  if (shotLibrary) {
+    shotSources.forEach((shot, i) => {
+      const thumb = document.createElement('div');
+      thumb.className = 'shot-thumb';
+      if (i < 10) thumb.classList.add('in-timeline');
+      thumb.draggable = true;
+      thumb.dataset.src = shot.src;
+      thumb.dataset.index = i;
+      thumb.innerHTML = '<img src="' + shot.src + '" alt="' + shot.label + '" loading="lazy">';
+
+      thumb.addEventListener('dragstart', (e) => {
+        draggedShotSrc = shot.src;
+        draggedShotEl = thumb;
+        thumb.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      thumb.addEventListener('dragend', () => {
+        thumb.classList.remove('dragging');
+        draggedShotEl = null;
+      });
+
+      shotLibrary.appendChild(thumb);
+    });
+  }
+
+  // Pre-fill timeline slots
+  // Timeline slots with swap support
+  timelineSlots.forEach((slot, idx) => {
+    if (timelineData[idx]) {
+      slot.innerHTML = '<img src="' + timelineData[idx] + '" alt="" draggable="true" loading="lazy">';
+      slot.classList.add('filled');
+    }
+
+    // Make filled slots draggable for swapping
+    slot.draggable = true;
+    slot.addEventListener('dragstart', (e) => {
+      if (slot.classList.contains('filled')) {
+        e.dataTransfer.setData('text/plain', idx.toString());
+        e.dataTransfer.effectAllowed = 'move';
+        slot.style.opacity = '0.4';
+      }
+    });
+    slot.addEventListener('dragend', () => {
+      slot.style.opacity = '1';
+    });
+
+    slot.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      slot.classList.add('drag-over');
+    });
+    slot.addEventListener('dragleave', () => {
+      slot.classList.remove('drag-over');
+    });
+    slot.addEventListener('drop', (e) => {
+      e.preventDefault();
+      slot.classList.remove('drag-over');
+
+      // Check if this is a swap from another timeline slot
+      var fromIdx = e.dataTransfer.getData('text/plain');
+      if (fromIdx !== '' && !isNaN(parseInt(fromIdx))) {
+        fromIdx = parseInt(fromIdx);
+        // Swap the two slots
+        var temp = timelineData[idx];
+        timelineData[idx] = timelineData[fromIdx];
+        timelineData[fromIdx] = temp;
+        // Re-render both slots
+        renderSlot(idx);
+        renderSlot(fromIdx);
+      } else if (draggedShotSrc) {
+        // Drop from library
+        timelineData[idx] = draggedShotSrc;
+        renderSlot(idx);
+        if (draggedShotEl) draggedShotEl.classList.add('in-timeline');
+      }
+      updateClipCount();
+    });
+
+    // Click to remove
+    slot.addEventListener('click', () => {
+      if (slot.classList.contains('filled')) {
+        timelineData[idx] = null;
+        renderSlot(idx);
+        updateClipCount();
+      }
+    });
+  });
+
+  function renderSlot(idx) {
+    var slot = timelineSlots[idx];
+    if (!slot) return;
+    if (timelineData[idx]) {
+      slot.innerHTML = '<img src="' + timelineData[idx] + '" alt="" draggable="true" loading="lazy">';
+      slot.classList.add('filled');
+    } else {
+      slot.innerHTML = '<span class="slot-num">' + (idx + 1) + '</span>';
+      slot.classList.remove('filled');
+    }
+  }
+
+  function updateClipCount() {
+    var filled = timelineData.filter(function(d) { return d; }).length;
+    var el = document.getElementById('tl-clip-count');
+    if (el) el.textContent = filled + ' / 10 CLIPS';
+  }
+
+  // Track selectors
+  const trackBtns = document.querySelectorAll('.track-btn');
+  let selectedTrack = 'a';
+
+  function generateTrackWaves() {
+    ['a', 'b', 'c', 'd', 'e', 'f'].forEach(t => {
+      const container = document.getElementById('track-wave-' + t);
+      if (!container) return;
+      const colors = { a: '#2B4AE8', b: '#FF6B35', c: '#4A8B5C', d: '#9333EA', e: '#DC2626', f: '#0891B2' };
+      for (let i = 0; i < 40; i++) {
+        const bar = document.createElement('span');
+        bar.style.height = (Math.random() * 80 + 10) + '%';
+        bar.style.background = colors[t];
+        container.appendChild(bar);
+      }
+    });
+  }
+  generateTrackWaves();
+
+  trackBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      trackBtns.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedTrack = btn.dataset.track;
+    });
+  });
+
+  // ==========================================
+  // FULLSCREEN MOOD REEL PLAYBACK
+  // ==========================================
+  const moodOverlay = document.getElementById('mood-overlay');
+  const moodDisplay = document.getElementById('mood-display');
+  const moodPosition = document.getElementById('mood-position');
+  const moodPlayBtn = document.getElementById('mood-play-btn');
+  const moodResetBtn = document.getElementById('mood-reset-btn');
+  const moodCloseBtn = document.getElementById('mood-close-overlay');
+  let moodPlayInterval = null;
+
+  // Real MP3 playback for Mood Reel
+  var moodAudioEl = null;
+  var trackLetterToNum = { 'a': '1', 'b': '2', 'c': '3', 'd': '4', 'e': '5', 'f': '6' };
+  var trackFiles = {
+    '1': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Other-Music--Booker%20T.%20%26%20The%20MGs%20-%20Green%20Onions%20(Official%20Audio).mp3',
+    '2': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Other-Music--Mambo%20No.%205%20(Official%20Instrumental) - Lou Bega.mp3',
+    '3': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Other-Music--Dexys%20Midnight%20Runners%20-%20Come%20On%20Eileen%20(Instrumental).mp3',
+    '4': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Other-Music--Elvis%20Presley%20-%20A%20Little%20Less%20Conversation%20(Junkie%20XL%20Remix) (OpenVINO Instrumental).mp3',
+    '5': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Other-Music--The%20Rolling%20Stones%20-%20Sympathy%20for%20the%20Devil%20(instrumental) HQ.mp3',
+    '6': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Ryans-Work-Other-Music--The%20Beat%20Goes%20On%20(Instrumental%20Version).mp3'
+  };
+
+  function startMoodMusic(trackType) {
+    stopMoodMusic();
+    var trackId = trackLetterToNum[trackType] || trackType;
+    var src = trackFiles[trackId];
+    if (src) {
+      moodAudioEl = new Audio(src);
+      moodAudioEl.volume = 0.5;
+      moodAudioEl.play().catch(function(){});
+    }
+  }
+
+  function stopMoodMusic() {
+    if (moodAudioEl) {
+      moodAudioEl.pause();
+      moodAudioEl.currentTime = 0;
+      moodAudioEl = null;
+    }
+  }
+
+  function stopMoodPlayback() {
+    if (moodPlayInterval) clearInterval(moodPlayInterval);
+    stopMoodMusic();
+    moodOverlay.classList.remove('active');
+    moodDisplay.innerHTML = '';
+    moodPosition.innerHTML = '';
+  }
+
+  if (moodPlayBtn) {
+    moodPlayBtn.addEventListener('click', () => {
+      const filledSlots = timelineData.filter(Boolean);
+      if (filledSlots.length === 0) return;
+
+      // Build fullscreen overlay
+      moodOverlay.classList.add('active');
+      startMoodMusic(selectedTrack);
+      moodDisplay.innerHTML = '';
+      moodPosition.innerHTML = '';
+
+      // Animate playhead
+      var phFill = document.getElementById('tl-playhead-fill');
+      var phDot = document.getElementById('tl-playhead-dot');
+      if (phFill && phDot) {
+        var totalDuration = timelineData.filter(function(d){return d;}).length * 3; // 3 sec per clip
+        var startT = Date.now();
+        var phInterval = setInterval(function() {
+          var elapsed = (Date.now() - startT) / 1000;
+          var pct = Math.min(100, (elapsed / totalDuration) * 100);
+          phFill.style.width = pct + '%';
+          phDot.style.left = pct + '%';
+          if (pct >= 100) clearInterval(phInterval);
+        }, 100);
+      }
+
+      // Create image elements
+      filledSlots.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = 'Mood reel ' + (i + 1);
+        img.style.position = i === 0 ? 'relative' : 'absolute';
+        img.style.inset = '0';
+        if (i === 0) img.classList.add('active');
+        moodDisplay.appendChild(img);
+
+        const pip = document.createElement('div');
+        pip.className = 'mood-pip' + (i === 0 ? ' active' : '');
+        moodPosition.appendChild(pip);
+      });
+
+      const images = moodDisplay.querySelectorAll('img');
+      const pips = moodPosition.querySelectorAll('.mood-pip');
+      let currentIdx = 0;
+
+      // Make non-first images absolute
+      images.forEach((img, i) => {
+        if (i > 0) {
+          img.style.position = 'absolute';
+          img.style.top = '0';
+          img.style.left = '0';
+        }
+      });
+
+      moodPlayInterval = setInterval(() => {
+        images[currentIdx].classList.remove('active');
+        pips[currentIdx].classList.remove('active');
+        currentIdx++;
+        if (currentIdx >= filledSlots.length) {
+          stopMoodPlayback();
+          return;
+        }
+        images[currentIdx].classList.add('active');
+        pips[currentIdx].classList.add('active');
+      }, 3000);
+    });
+  }
+
+  if (moodCloseBtn) {
+    moodCloseBtn.addEventListener('click', stopMoodPlayback);
+  }
+
+  if (moodResetBtn) {
+    moodResetBtn.addEventListener('click', () => {
+      stopMoodMusic();
+      timelineData.fill(null);
+      // Re-fill with defaults
+      shotSources.slice(0, 10).forEach((shot, i) => {
+        timelineData[i] = shot.src;
+      });
+      timelineSlots.forEach((slot, i) => {
+        renderSlot(i);
+        slot.style.outline = 'none';
+      });
+      updateClipCount();
+      document.querySelectorAll('.shot-thumb').forEach((t, i) => {
+        t.classList.toggle('in-timeline', i < 10);
+      });
+    });
+  }
+
+  // ==========================================
+  // FLOOR PLAN BLOCKING
+  // ==========================================
+  const fpR1Btn = document.getElementById('fp-r1');
+  const fpR2Btn = document.getElementById('fp-r2');
+  const fpDrawBtn = document.getElementById('fp-draw');
+  const fpDrawOwnBtn = document.getElementById('fp-draw-own');
+  const fpClearDrawBtn = document.getElementById('fp-clear-draw');
+  const fpResetBtn = document.getElementById('fp-reset');
+  const pathR1 = document.getElementById('fp-path-r1');
+  const pathR2 = document.getElementById('fp-path-r2');
+  const beatsR1 = document.getElementById('fp-beats-r1');
+  const beatsR2 = document.getElementById('fp-beats-r2');
+  const fpSvg = document.getElementById('floor-plan-svg');
+  const fpUserDrawGroup = document.getElementById('fp-user-draw');
+
+  let fpMode = 'r1';
+  let fpIsDrawing = false;
+  let fpDrawActive = false;
+  let fpDrawPoints = [];
+  let fpUserPath = null;
+
+  function fpSetMode(mode) {
+    fpMode = mode;
+    if (fpR1Btn) fpR1Btn.classList.toggle('active', mode === 'r1');
+    if (fpR2Btn) fpR2Btn.classList.toggle('active', mode === 'r2');
+    fpExitDrawMode();
+    fpResetPath();
+  }
+
+  function fpResetPath() {
+    if (pathR1) { pathR1.style.strokeDashoffset = '1200'; pathR1.style.transition = 'none'; }
+    if (pathR2) { pathR2.style.strokeDashoffset = '2400'; pathR2.style.transition = 'none'; }
+    if (beatsR1) beatsR1.style.opacity = '0';
+    if (beatsR2) beatsR2.style.opacity = '0';
+  }
+
+  function fpAnimatePath() {
+    fpResetPath();
+    const path = fpMode === 'r1' ? pathR1 : pathR2;
+    const beats = fpMode === 'r1' ? beatsR1 : beatsR2;
+    if (!path) return;
+
+    void path.offsetWidth;
+
+    var duration = fpMode === 'r1' ? '1.5s' : '3s';
+    path.style.transition = 'stroke-dashoffset ' + duration + ' ease-in-out';
+    path.style.strokeDashoffset = '0';
+
+    setTimeout(() => {
+      if (beats) {
+        beats.style.transition = 'opacity 0.5s ease';
+        beats.style.opacity = '1';
+      }
+    }, fpMode === 'r1' ? 1200 : 2500);
+  }
+
+  // Draw Your Own path functionality
+  function fpGetSVGPoint(evt) {
+    var pt = fpSvg.createSVGPoint();
+    var touch = evt.touches ? evt.touches[0] : evt;
+    pt.x = touch.clientX;
+    pt.y = touch.clientY;
+    var svgPt = pt.matrixTransform(fpSvg.getScreenCTM().inverse());
+    return svgPt;
+  }
+
+  function fpEnterDrawMode() {
+    fpDrawActive = true;
+    fpDrawPoints = [];
+    fpClearUserPath();
+    if (fpSvg) fpSvg.style.cursor = 'crosshair';
+    if (fpDrawOwnBtn) fpDrawOwnBtn.classList.add('active');
+    if (fpClearDrawBtn) fpClearDrawBtn.style.display = '';
+  }
+
+  function fpExitDrawMode() {
+    fpDrawActive = false;
+    fpIsDrawing = false;
+    if (fpSvg) fpSvg.style.cursor = '';
+    if (fpDrawOwnBtn) fpDrawOwnBtn.classList.remove('active');
+  }
+
+  function fpClearUserPath() {
+    if (fpUserDrawGroup) fpUserDrawGroup.innerHTML = '';
+    fpUserPath = null;
+    fpDrawPoints = [];
+  }
+
+  function fpUpdateUserPath() {
+    if (fpDrawPoints.length < 2) return;
+    var d = 'M' + fpDrawPoints[0].x + ',' + fpDrawPoints[0].y;
+    for (var i = 1; i < fpDrawPoints.length; i++) {
+      d += ' L' + fpDrawPoints[i].x + ',' + fpDrawPoints[i].y;
+    }
+    if (!fpUserPath) {
+      fpUserPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      fpUserPath.setAttribute('fill', 'none');
+      fpUserPath.setAttribute('stroke', '#FF6B35');
+      fpUserPath.setAttribute('stroke-width', '3');
+      fpUserPath.setAttribute('stroke-dasharray', '8 4');
+      fpUserPath.setAttribute('stroke-linecap', 'round');
+      fpUserPath.setAttribute('stroke-linejoin', 'round');
+      fpUserPath.setAttribute('opacity', '0.9');
+      if (fpUserDrawGroup) fpUserDrawGroup.appendChild(fpUserPath);
+    }
+    fpUserPath.setAttribute('d', d);
+  }
+
+  function fpOnPointerDown(evt) {
+    if (!fpDrawActive) return;
+    evt.preventDefault();
+    fpIsDrawing = true;
+    fpDrawPoints = [];
+    fpClearUserPath();
+    var pt = fpGetSVGPoint(evt);
+    fpDrawPoints.push(pt);
+  }
+
+  function fpOnPointerMove(evt) {
+    if (!fpIsDrawing) return;
+    evt.preventDefault();
+    var pt = fpGetSVGPoint(evt);
+    fpDrawPoints.push(pt);
+    fpUpdateUserPath();
+  }
+
+  function fpOnPointerUp(evt) {
+    if (!fpIsDrawing) return;
+    fpIsDrawing = false;
+    fpUpdateUserPath();
+  }
+
+  if (fpSvg) {
+    fpSvg.addEventListener('mousedown', fpOnPointerDown);
+    fpSvg.addEventListener('mousemove', fpOnPointerMove);
+    fpSvg.addEventListener('mouseup', fpOnPointerUp);
+    fpSvg.addEventListener('mouseleave', fpOnPointerUp);
+    fpSvg.addEventListener('touchstart', fpOnPointerDown, { passive: false });
+    fpSvg.addEventListener('touchmove', fpOnPointerMove, { passive: false });
+    fpSvg.addEventListener('touchend', fpOnPointerUp);
+  }
+
+  if (fpR1Btn) fpR1Btn.addEventListener('click', () => fpSetMode('r1'));
+  if (fpR2Btn) fpR2Btn.addEventListener('click', () => fpSetMode('r2'));
+  if (fpDrawBtn) fpDrawBtn.addEventListener('click', fpAnimatePath);
+  if (fpDrawOwnBtn) fpDrawOwnBtn.addEventListener('click', fpEnterDrawMode);
+  if (fpClearDrawBtn) fpClearDrawBtn.addEventListener('click', () => {
+    fpClearUserPath();
+    fpClearDrawBtn.style.display = 'none';
+    fpExitDrawMode();
+  });
+  if (fpResetBtn) fpResetBtn.addEventListener('click', () => {
+    fpResetPath();
+    fpClearUserPath();
+    fpExitDrawMode();
+    if (fpClearDrawBtn) fpClearDrawBtn.style.display = 'none';
+  });
+
+  // ==========================================
+  // TOPBAR HIDE ON SCROLL DOWN
+  // ==========================================
+  // Topbar stays visible at all times -- no hide on scroll
+
+  // ==========================================
+  // INIT
+  // ==========================================
+  if (sections[0]) sections[0].classList.add('visible');
+
+})();
+
+// My Work -- click to play video
+function playMyWork(src) {
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:10000;display:flex;align-items:center;justify-content:center;cursor:pointer;';
+  var video = document.createElement('video');
+  video.src = src;
+  video.controls = true;
+  video.autoplay = true;
+  video.style.cssText = 'max-width:90vw;max-height:80vh;border-radius:12px;';
+  overlay.appendChild(video);
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) { video.pause(); overlay.remove(); }
+  });
+  document.body.appendChild(overlay);
+}
+
+// Director's Note Audio Players
+(function() {
+  function mkWaveBars(el, n) {
+    if (!el) return;
+    for (var i = 0; i < n; i++) {
+      var b = document.createElement('div');
+      b.className = 'bar';
+      b.style.height = (Math.random() * 12 + 4) + 'px';
+      b.style.animationDelay = (Math.random() * 0.4) + 's';
+      el.appendChild(b);
+    }
+  }
+  document.querySelectorAll('.dn-wave').forEach(function(el) { mkWaveBars(el, 24); });
+
+  var dnAudioEl = null;
+  var dnCurrentId = null;
+  var dnInterval = null;
+
+  window.dnTogglePlay = function(id) {
+    var el = document.getElementById('dn-' + id);
+    if (!el) return;
+
+    // If clicking the same one that's playing, pause it
+    if (dnCurrentId === id && dnAudioEl && !dnAudioEl.paused) {
+      dnAudioEl.pause();
+      el.classList.remove('is-playing');
+      var btn = el.querySelector('.dn-play');
+      if (btn) btn.innerHTML = '&#9654;';
+      clearInterval(dnInterval);
+      dnCurrentId = null;
+      return;
+    }
+
+    // Stop any currently playing
+    document.querySelectorAll('.director-note').forEach(function(n) {
+      n.classList.remove('is-playing');
+      var b = n.querySelector('.dn-play');
+      if (b) b.innerHTML = '&#9654;';
+      var p = n.querySelector('.dn-progress');
+      if (p) p.style.width = '0%';
+    });
+    if (dnAudioEl) { dnAudioEl.pause(); dnAudioEl.currentTime = 0; }
+    clearInterval(dnInterval);
+
+    // Create audio and play -- each note gets its own clip
+    var dnClips = {
+      'welcome': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/AUdio-Recordings-Director-clips--welcome-note.mp3',
+      'blocking': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/AUdio-Recordings-Director-clips--dance-partners.mp3',
+      'mug': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/AUdio-Recordings-Director-clips--dance-partners.mp3',
+      'bridge': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/AUdio-Recordings-Director-clips--dir-note---audio-storyboard-.mp3',
+      'floorplan': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/AUdio-Recordings-Director-clips--floor-plan-directors-note.mp3',
+      'moodreel': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/AUdio-Recordings-Director-clips--mood-reel-explorer.mp3',
+      'exchanges': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/AUdio-Recordings-Director-clips--good-exchanges.mp3',
+      'audiostoryboard': 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/AUdio-Recordings-Director-clips--dir-note---audio-storyboard-.mp3'
+    };
+    dnAudioEl = new Audio(dnClips[id] || 'https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/AUdio-Recordings-Director-clips--dn-blocking.mp3');
+    dnCurrentId = id;
+
+    dnAudioEl.addEventListener('loadedmetadata', function() {
+      var dur = el.querySelector('.dn-dur');
+      if (dur) {
+        var m = Math.floor(dnAudioEl.duration / 60);
+        var s = Math.floor(dnAudioEl.duration % 60).toString().padStart(2, '0');
+        dur.textContent = m + ':' + s;
+      }
+    });
+
+    dnAudioEl.play().catch(function(){});
+    el.classList.add('is-playing');
+    var btn = el.querySelector('.dn-play');
+    if (btn) btn.innerHTML = '&#9646;&#9646;';
+
+    dnInterval = setInterval(function() {
+      if (!dnAudioEl || dnAudioEl.paused) return;
+      var pct = (dnAudioEl.currentTime / dnAudioEl.duration) * 100;
+      var prog = el.querySelector('.dn-progress');
+      if (prog) prog.style.width = pct + '%';
+      var dur = el.querySelector('.dn-dur');
+      if (dur) {
+        var m = Math.floor(dnAudioEl.currentTime / 60);
+        var s = Math.floor(dnAudioEl.currentTime % 60).toString().padStart(2, '0');
+        dur.textContent = m + ':' + s;
+      }
+    }, 250);
+
+    dnAudioEl.addEventListener('ended', function() {
+      el.classList.remove('is-playing');
+      if (btn) btn.innerHTML = '&#9654;';
+      var prog = el.querySelector('.dn-progress');
+      if (prog) prog.style.width = '0%';
+      clearInterval(dnInterval);
+      dnCurrentId = null;
+    });
+  };
+})();
+</script>
+
+</body>
+</html>
