@@ -1473,11 +1473,61 @@ h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
   .sound-bridge-arrow { transform: rotate(90deg); }
 }
 @media (max-width: 640px) {
-  .section { padding: 80px 20px 40px; }
+  .section { padding: 80px 16px 40px; }
   .grid-3 { grid-template-columns: 1fr; }
-  .mood-reel { padding: 24px; }
+  .grid-4, .grid-2x4, .grid-3x2 { grid-template-columns: repeat(2, 1fr); }
+  .mood-reel { padding: 20px; }
   .storyboard-grid { grid-template-columns: repeat(3, 1fr); }
   .track-selectors { flex-direction: column; }
+  .shot-library { grid-template-columns: repeat(3, 1fr); }
+  .shot-thumb { height: 100px; }
+  .timeline-track, .timeline-timecodes { grid-template-columns: repeat(3, 1fr); }
+  .collage-grid { grid-template-columns: 1fr; }
+
+  /* Topbar mobile */
+  #topbar { padding: 0 12px; }
+  #topbar-center { font-size: 0.85rem; }
+  #page-counter { min-width: 60px; font-size: 0.65rem; }
+  #section-name { font-size: 0.6rem; display: none; }
+
+  /* Dashboard */
+  #dash-toggle { right: 12px; padding: 8px 14px; font-size: 0.6rem; top: 12px; }
+  #dashboard { padding: 70px 16px 40px; }
+  .dash-title { font-size: 2.2rem; }
+  .dash-card { padding: 20px 16px; }
+  #dash-close { top: 16px; right: 16px; padding: 6px 14px; }
+
+  /* Inline grid overrides — these use !important to beat style="" attributes */
+  [style*="grid-template-columns:repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns:repeat(5"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns: repeat(5"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns:repeat(6"] { grid-template-columns: repeat(3, 1fr) !important; }
+  [style*="grid-template-columns: repeat(6"] { grid-template-columns: repeat(3, 1fr) !important; }
+  [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+
+  /* Typography tightening */
+  h2 { font-size: clamp(2rem, 8vw, 4rem); }
+  .quote { font-size: clamp(1.1rem, 4vw, 1.6rem); }
+  .quote-block { padding: 16px 20px; margin: 24px 0; }
+
+  /* Video overlay on small screens */
+  .playMyWork video,
+  [onclick*="playMyWork"] video { width: 100%; }
+}
+@media (max-width: 400px) {
+  .section { padding: 70px 12px 32px; }
+  [style*="grid-template-columns:repeat(4"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: repeat(4"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns:repeat(5"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: repeat(5"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns:repeat(6"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns: repeat(6"] { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-4, .grid-2x4, .grid-3x2 { grid-template-columns: 1fr; }
+  .storyboard-grid { grid-template-columns: repeat(2, 1fr); }
+  .shot-library { grid-template-columns: repeat(2, 1fr); }
+  .timeline-track, .timeline-timecodes { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -2579,7 +2629,7 @@ h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
     </div>
     <div>
       <div style="border-radius:12px; overflow:hidden; margin-bottom:16px; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Kessler%20Charters.mp4')">
-        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Kessler%20Charters.mp4" style="width:100%; display:block;" muted preload="none"></video>
+        <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Kessler%20Charters.mp4#t=0.5" style="width:100%; display:block;" muted preload="metadata"></video>
         <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.3);">
           <div style="width:48px; height:48px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff;">&#9654;</div>
         </div>
@@ -2591,22 +2641,22 @@ h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
   <p class="label" style="margin:40px 0 16px;">JORDAN'S REEL -- KEY STEADICAM / GIMBAL WORK</p>
   <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
     <div style="border-radius:10px; overflow:hidden; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--001615_THD_FY23_MOVERS_02_RENTERS_POSTMOVE_IndoorFurnish_OutdoorPatio_15_16x9_YHTFD00IZ30H_WEB.mp4')">
-      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--001615_THD_FY23_MOVERS_02_RENTERS_POSTMOVE_IndoorFurnish_OutdoorPatio_15_16x9_YHTFD00IZ30H_WEB.mp4" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="none"></video>
+      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--001615_THD_FY23_MOVERS_02_RENTERS_POSTMOVE_IndoorFurnish_OutdoorPatio_15_16x9_YHTFD00IZ30H_WEB.mp4#t=0.5" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="metadata"></video>
       <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><div style="width:32px; height:32px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;">&#9654;</div></div>
       <p style="position:absolute; bottom:4px; left:8px; font-family:var(--font-mono); font-size:8px; color:#fff; letter-spacing:0.08em;">THD REUBAN</p>
     </div>
     <div style="border-radius:10px; overflow:hidden; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--NCAA%20Madness%20Live%2030%20Generic_2398_1080_03-Large%20540p.mp4')">
-      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--NCAA%20Madness%20Live%2030%20Generic_2398_1080_03-Large%20540p.mp4" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="none"></video>
+      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--NCAA%20Madness%20Live%2030%20Generic_2398_1080_03-Large%20540p.mp4#t=0.5" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="metadata"></video>
       <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><div style="width:32px; height:32px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;">&#9654;</div></div>
       <p style="position:absolute; bottom:4px; left:8px; font-family:var(--font-mono); font-size:8px; color:#fff; letter-spacing:0.08em;">NCAA -- STEADICAM</p>
     </div>
     <div style="border-radius:10px; overflow:hidden; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--ATT%20Courtneys%20Holiday%20Surprise.mp4')">
-      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--ATT%20Courtneys%20Holiday%20Surprise.mp4" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="none"></video>
+      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--ATT%20Courtneys%20Holiday%20Surprise.mp4#t=0.5" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="metadata"></video>
       <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><div style="width:32px; height:32px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;">&#9654;</div></div>
       <p style="position:absolute; bottom:4px; left:8px; font-family:var(--font-mono); font-size:8px; color:#fff; letter-spacing:0.08em;">ATT -- STEADICAM</p>
     </div>
     <div style="border-radius:10px; overflow:hidden; cursor:pointer; position:relative;" onclick="playMyWork('https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Samsung_30_Prores-Apple%20Devices%20HD%20(Best%20Quality) copy.mp4')">
-      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Samsung_30_Prores-Apple%20Devices%20HD%20(Best%20Quality) copy.mp4" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="none"></video>
+      <video src="https://pub-6c5c5ff841d6492b84503481246efda8.r2.dev/assets/Jordan-Reel--Samsung_30_Prores-Apple%20Devices%20HD%20(Best%20Quality) copy.mp4#t=0.5" style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" muted preload="metadata"></video>
       <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><div style="width:32px; height:32px; border-radius:50%; background:var(--secondary); display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;">&#9654;</div></div>
       <p style="position:absolute; bottom:4px; left:8px; font-family:var(--font-mono); font-size:8px; color:#fff; letter-spacing:0.08em;">SAMSUNG</p>
     </div>
@@ -3487,7 +3537,7 @@ function playMyWork(src) {
   video.src = src;
   video.controls = true;
   video.autoplay = true;
-  video.style.cssText = 'max-width:90vw;max-height:80vh;border-radius:12px;';
+  video.style.cssText = 'max-width:95vw;max-height:80vh;border-radius:12px;width:100%;';
   overlay.appendChild(video);
   overlay.addEventListener('click', function(e) {
     if (e.target === overlay) { video.pause(); overlay.remove(); }
@@ -3631,6 +3681,8 @@ function playMyWork(src) {
         if (el.dataset.lazySrc) {
           el.src = el.dataset.lazySrc;
           delete el.dataset.lazySrc;
+          // Let videos load a frame for thumbnail display
+          if (el.tagName === 'VIDEO') el.preload = 'metadata';
         }
         // Restore background-image from data-lazy-bg
         if (el.dataset.lazyBg) {

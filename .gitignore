@@ -6,3 +6,4 @@ rewrite-html.ts
 deploy.py
 package.json
 package-lock.json
+.vercel
