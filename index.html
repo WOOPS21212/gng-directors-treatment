@@ -3093,7 +3093,11 @@ h3 { font-size: clamp(1.8rem, 3vw, 3rem); }
       thumb.draggable = true;
       thumb.dataset.src = shot.src;
       thumb.dataset.index = i;
-      thumb.innerHTML = '<img src="' + shot.src + '" alt="' + shot.label + '" loading="lazy">';
+      if (shot.src.endsWith('.mp4')) {
+        thumb.innerHTML = '<video src="' + shot.src + '" muted autoplay loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;"></video>';
+      } else {
+        thumb.innerHTML = '<img src="' + shot.src + '" alt="' + shot.label + '" loading="lazy">';
+      }
 
       thumb.addEventListener('dragstart', (e) => {
         draggedShotSrc = shot.src;
