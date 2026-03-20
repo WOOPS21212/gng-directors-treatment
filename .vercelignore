@@ -1,0 +1,6 @@
+assets/
+node_modules/
+upload-to-r2.ts
+rewrite-html.ts
+deploy.py
+.DS_Store
