@@ -3590,6 +3590,134 @@ function playMyWork(src) {
     });
   };
 })();
+
+// ==========================================
+// LAZY LOADING + STAGGERED MEDIA LOADER
+// Prevents r2.dev rate limiting by deferring
+// off-screen media and staggering requests
+// ==========================================
+(function() {
+  var CDN = 'pub-6c5c5ff841d6492b84503481246efda8.r2.dev';
+  var VIEWPORT_MARGIN = '200px';
+  var STAGGER_MS = 80;
+  var queue = [];
+  var processing = false;
+
+  function processQueue() {
+    if (processing || queue.length === 0) return;
+    processing = true;
+    var next = queue.shift();
+    next();
+    setTimeout(function() {
+      processing = false;
+      processQueue();
+    }, STAGGER_MS);
+  }
+
+  function enqueue(fn) {
+    queue.push(fn);
+    processQueue();
+  }
+
+  // Lazy load images and videos via IntersectionObserver
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      observer.unobserve(el);
+
+      enqueue(function() {
+        // Restore src from data-lazy-src
+        if (el.dataset.lazySrc) {
+          el.src = el.dataset.lazySrc;
+          delete el.dataset.lazySrc;
+        }
+        // Restore background-image from data-lazy-bg
+        if (el.dataset.lazyBg) {
+          el.style.backgroundImage = "url('" + el.dataset.lazyBg + "')";
+          delete el.dataset.lazyBg;
+        }
+        // Restore source children for audio/video
+        var sources = el.querySelectorAll('source[data-lazy-src]');
+        sources.forEach(function(s) {
+          s.src = s.dataset.lazySrc;
+          delete s.dataset.lazySrc;
+        });
+        if (sources.length && el.load) el.load();
+      });
+    });
+  }, { rootMargin: VIEWPORT_MARGIN });
+
+  function deferMedia() {
+    // Defer images with CDN src (skip first 4 for above-the-fold)
+    var imgs = document.querySelectorAll('img[src*="' + CDN + '"]');
+    var imgSkip = 4;
+    imgs.forEach(function(img, i) {
+      if (i < imgSkip) return;
+      img.dataset.lazySrc = img.src;
+      img.removeAttribute('src');
+      observer.observe(img);
+    });
+
+    // Defer all videos with CDN src
+    var videos = document.querySelectorAll('video[src*="' + CDN + '"]');
+    videos.forEach(function(v) {
+      v.dataset.lazySrc = v.src;
+      v.removeAttribute('src');
+      v.preload = 'none';
+      observer.observe(v);
+    });
+
+    // Defer audio sources
+    var audios = document.querySelectorAll('audio source[src*="' + CDN + '"]');
+    audios.forEach(function(s) {
+      s.dataset.lazySrc = s.src;
+      s.removeAttribute('src');
+      observer.observe(s.parentElement);
+    });
+
+    // Defer background-image styles with CDN URLs
+    var allEls = document.querySelectorAll('[style*="' + CDN + '"]');
+    allEls.forEach(function(el) {
+      var bg = el.style.backgroundImage;
+      if (bg && bg.indexOf(CDN) !== -1) {
+        var match = bg.match(/url\(['"]?([^'")\s]+)['"]?\)/);
+        if (match) {
+          el.dataset.lazyBg = match[1];
+          el.style.backgroundImage = 'none';
+          observer.observe(el);
+        }
+      }
+    });
+  }
+
+  // Also observe dynamically created elements
+  var mutObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      m.addedNodes.forEach(function(node) {
+        if (node.nodeType !== 1) return;
+        // Check added element and its children
+        var els = [node];
+        if (node.querySelectorAll) {
+          els = els.concat(Array.from(node.querySelectorAll('img, video')));
+        }
+        els.forEach(function(el) {
+          if (!el.src || el.src.indexOf(CDN) === -1) return;
+          if (el.dataset.lazySrc) return; // already deferred
+          el.dataset.lazySrc = el.src;
+          el.removeAttribute('src');
+          observer.observe(el);
+        });
+      });
+    });
+  });
+
+  // Run after DOM is ready and initial JS has executed
+  setTimeout(function() {
+    deferMedia();
+    mutObserver.observe(document.body, { childList: true, subtree: true });
+  }, 100);
+})();
 </script>
 
 </body>
